@@ -1,0 +1,1 @@
+<img src="{{ '/storage/images/Logo.png' }}" alt="no image" style="width:30%">  
