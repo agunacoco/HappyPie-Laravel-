@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\DessertsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,8 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/happypie', function () {
+Route::get('/', function () {
     return view('happypies.main');
 })->name('happypie.main');
 
+Route::get('/happypies/aboutme', function () {
+    return view('happypies.intro');
+})->name('happypie.intro');
+
+Route::get('/happypies/menu', [DessertsController::class, 'index'])->name('happypie.menu');
 require __DIR__.'/auth.php';

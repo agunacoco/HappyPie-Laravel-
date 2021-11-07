@@ -19,24 +19,22 @@
     <body class="font-sans antialiased">
         <div class="bg-yellow-100 min-h-screen">
 
-            <div class="">
-                <a href="{{ route('happypie.main') }}">
-                    <x-application-logo style="width:50%" />
-                </a>
-            </div>
+                
+                <div class="flex justify-center p-2">
+                    <a href="{{ route('happypie.main') }}">
+                        <x-application-logo />
+                    </a>
+                </div>
+                
+            
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-
             <!-- Page Content -->
+            <div class="p-10">
             <main>
                 {{ $slot }}
             </main>
+            </div>
         </div>
     </body>
 </html>
