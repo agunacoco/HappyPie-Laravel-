@@ -17,21 +17,17 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
-        <div class="bg-yellow-100 min-h-screen">
+        <div class="bg-yellow-100 min-h-screen">  
+            <div class="flex justify-center p-2">
+                <a href="{{ route('happypie.main') }}">
+                    <x-application-logo />
+                </a>
+            </div>
 
-                
-                <div class="flex justify-center p-2">
-                    <a href="{{ route('happypie.main') }}">
-                        <x-application-logo />
-                    </a>
-                </div>
-                
-            
             @include('layouts.navigation')
-
             <!-- Page Content -->
             <div class="p-10">
-            <main>
+            <main id="app">
                 {{ $slot }}
             </main>
             </div>

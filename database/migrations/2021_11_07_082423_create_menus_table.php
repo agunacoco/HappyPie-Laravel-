@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDessertsTable extends Migration
+class CreateMenusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateDessertsTable extends Migration
      */
     public function up()
     {
-        Schema::create('desserts', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('menu(k)');
@@ -32,6 +32,6 @@ class CreateDessertsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('desserts');
+        Schema::dropIfExists('menus');
     }
 }
