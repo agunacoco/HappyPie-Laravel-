@@ -1,72 +1,135 @@
 <template>
-  <div>
-    <div class="flex justify-center">
-      <div class="row">
-        <div class="col">
-          <label for="image" class="form-label">File</label>
-          <input
-            type="file"
-            class="form-control"
-            name="image"
-            id="image"
-            rows="3"
-          />
-        </div>
-        <div class="col-md-7">
-          <div class="card-body mt-3">
-            <label for="menuK" class="form-label">Menu Name(Korean)</label
-            ><br />
-            <input
-              name="menuK"
-              id="menuK"
-              class="text-lg font-semibold"
-              placeholder="menu name"
-            /><br /><br />
-            <label for="menuE" class="form-label">Menu Name(English)</label
-            ><br />
-            <input
-              name="menuE"
-              id="menuE"
-              class="text-lg font-semibold"
-              placeholder="menu name"
-            />
-            <br /><br />
-            <label for="content" class="form-label">Content</label><br />
-            <textarea
-              name="content"
-              id="content"
-              placeholder="content"
-              class="text-lg leading-relaxed text-blueGray-500"
-            >
-            </textarea>
-          </div>
-        </div>
-      </div>
+  <form @submit.prevent="postMenus">
+    <div class="form-group">
+      <label for="menuK">Menu(Korean)</label>
+      <input
+        type="text"
+        name="menuK"
+        class="form-control"
+        id="menuK"
+        placeholder="Menu Name"
+        v-model="menuK"
+      />
     </div>
-    <div class="flex justify-center">
-      <button @click="postMenus">Submit</button>
+    <div class="form-group">
+      <label for="menuE">Menu(English)</label>
+      <input
+        type="text"
+        name="menuE"
+        class="form-control"
+        id="menuE"
+        placeholder="Menu Name"
+        v-model="menuE"
+      />
     </div>
-  </div>
-</template>
 
+    <div class="form-group">
+      <label for="content">Content</label>
+      <textarea
+        name="content"
+        class="form-control"
+        v-model="content"
+        placeholder="content"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price</label>
+      <input
+        type="text"
+        name="price"
+        class="form-control"
+        id="price"
+        placeholder="Price"
+        v-model="price"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="image">Picture</label>
+      <input
+        multiple
+        type="file"
+        name="image"
+        class="form-control-file"
+        id="image"
+        @change="onFileChange"
+      />
+    </div>
+
+    <div class="form-group">
+      <img
+        v-bind:src="imagePreview"
+        width="100"
+        height="100"
+        v-show="showPreview"
+      />
+    </div>
+
+    <div class="form-group">
+      <input type="submit" class="btn btn-success" />
+    </div>
+  </form>
+</template>
 <script>
 export default {
   data() {
     return {
       image: null,
-      menuK: "",
-      menuE: "",
-      content: "",
+      menuK: null,
+      menuE: null,
+      content: null,
+      price: null,
+      imagePreview: null,
+      showPreview: false,
     };
   },
   methods: {
     postMenus() {
-      axios.post("/happypie/store", {
-        content: this.content,
-        menuK: this.menuK,
-        menuE: this.menuE,
-        image: this.image,
-      });
+      const formData = new FormData();
+      formData.append("menuK", this.menuK);
+      formData.append("menuE", this.menuE);
+      formData.append("content", this.content);
+      formData.append("price", this.price);
+      formData.append("image", this.image);
+      axios
+        .post("/happypies/store", formData)
+        .then((response) => {
+          console.log("성공");
+          this.menuK = "";
+          this.menuE = "";
+          this.content = "";
+          this.price = "";
+          // this.image = "";
+          const imageInput = document.querySelector("#image");
+          imageInput.value = imageInput.defaultValue;
+          this.imagePreview = null;
+          this.showPreview = false;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    onFileChange(e) {
+      this.image = e.target.files[0];
+      let reader = new FileReader();
+      reader.addEventListener(
+        "load",
+        function () {
+          this.showPreview = true;
+          this.imagePreview = reader.result;
+        }.bind(this),
+        false
+      );
+      if (this.image) {
+        if (/\.(jpe?g|png|gif)$/i.test(this.image.name)) {
+          console.log("here");
+          reader.readAsDataURL(this.image);
+        }
+      } else {
+        this.showPreview = false;
+      }
     },
   },
 };
