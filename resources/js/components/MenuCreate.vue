@@ -105,6 +105,7 @@ export default {
           imageInput.value = imageInput.defaultValue;
           this.imagePreview = null;
           this.showPreview = false;
+          this.$parent.getMenu();
         })
         .catch((error) => {
           console.log(error);

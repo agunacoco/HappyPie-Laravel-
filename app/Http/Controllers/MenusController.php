@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 class MenusController extends Controller
 {
     public function index(){
-        return view('happypies.menu');
+        $menus = Menu::all();
+        
+        return $menus;
     }
 
     public function store(Request $request){

@@ -1,3 +1,3 @@
 <x-app-layout>
-    <menu-list />
+    <menu-list :menus="{{$menus}}"/>
 </x-app-layout>
