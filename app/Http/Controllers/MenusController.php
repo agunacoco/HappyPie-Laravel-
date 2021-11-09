@@ -30,14 +30,16 @@ class MenusController extends Controller
         }
 
         $menu = Menu::create([
-            'menu(k)' => $request->input('menuK'),
-            'menu(e)' => $request->input('menuE'),
-            '가격' => $request->input('price'),
+            'menuK' => $request->input('menuK'),
+            'menuE' => $request->input('menuE'),
+            'price' => $request->input('price'),
             'content' => $request->input('content'),
             'image' => $filename,
             'user_id' => auth()->user()->id,
         ]);
 
-        return $menu;
+        dd($menu);
+
+        return $filename;
     }
 }

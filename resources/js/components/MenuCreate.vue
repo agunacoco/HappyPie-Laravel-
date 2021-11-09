@@ -114,6 +114,7 @@ export default {
 
     onFileChange(e) {
       this.image = e.target.files[0];
+
       let reader = new FileReader();
       reader.addEventListener(
         "load",
@@ -125,7 +126,7 @@ export default {
       );
       if (this.image) {
         if (/\.(jpe?g|png|gif)$/i.test(this.image.name)) {
-          console.log("here");
+          console.log("showimage 성공");
           reader.readAsDataURL(this.image);
         }
       } else {

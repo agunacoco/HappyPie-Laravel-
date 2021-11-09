@@ -16,11 +16,11 @@ class CreateMenusTable extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('menu(k)');
-            $table->string('menu(e)');
+            $table->string('menuK');
+            $table->string('menuE');
             $table->text('content');
             $table->string('image')->nullable();
-            $table->unsignedInteger('가격');
+            $table->unsignedInteger('price');
             $table->timestamps();
         });
     }

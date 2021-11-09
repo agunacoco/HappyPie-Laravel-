@@ -23,6 +23,7 @@ Route::get('/happypies/aboutme', function () {
 })->name('happypie.intro');
 
 Route::get('/happypies/menu', [HappypiesController::class, 'index'])->name('happypie.menu');
+
 Route::get('/happypies/index', [MenusController::class, 'index'])->name('happypie.index');
 Route::post('/happypies/store', [MenusController::class, 'store'])->name('happypie.store');
 

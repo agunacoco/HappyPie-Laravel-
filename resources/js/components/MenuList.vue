@@ -5,7 +5,7 @@
       :key="index"
       :menuitem="menuitem"
     />
-    <button @click="btnClicked">Menu Create</button>
+    <button v-if="auth_user == 1" @click="btnClicked">Menu Create</button>
     <div v-if="numClick == true" class="card mb-3 p-10"><menu-create /></div>
   </div>
 </template>
@@ -15,11 +15,12 @@ import MenuItem from "./MenuItem.vue";
 import MenuCreate from "./MenuCreate.vue";
 export default {
   components: { MenuItem, MenuCreate },
-  props: ["menus"],
+  props: ["menus", "auth_user"],
   data() {
     return {
       numClick: false,
       menuitems: [],
+      menuwriter: 1,
     };
   },
   methods: {
@@ -31,7 +32,6 @@ export default {
         .get("/happypies/index")
         .then((response) => {
           console.log("getMenu 성공");
-          console.log(response.data);
           this.menuitems = response.data;
         })
         .catch((error) => {

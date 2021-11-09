@@ -1,9 +1,16 @@
 <template>
   <div class="card" style="width: 18rem">
-    <img src="" class="card-img-top" alt="..." />
+    <img
+      :src="'/storage/images/' + menuitem.image"
+      class="card-img-top"
+      alt="..."
+    />
     <div class="card-body">
       <p class="card-text">
-        {{ menuitem.content }}
+        {{ menuitem.menuK }}
+      </p>
+      <p class="card-text">
+        {{ menuitem.menuE }}
       </p>
     </div>
   </div>
@@ -12,5 +19,6 @@
 <script>
 export default {
   props: ["menuitem"],
+  methods: {},
 };
 </script>
