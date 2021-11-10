@@ -26,5 +26,6 @@ Route::get('/happypies/menu', [HappypiesController::class, 'index'])->name('happ
 
 Route::get('/happypies/index', [MenusController::class, 'index'])->name('happypie.index');
 Route::post('/happypies/store', [MenusController::class, 'store'])->name('happypie.store');
+Route::get('/happypies/show/{menu_id}', [MenusController::class, 'show'])->name('happypie.show');
 
 require __DIR__.'/auth.php';

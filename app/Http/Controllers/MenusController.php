@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Menu;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class MenusController extends Controller
@@ -13,7 +14,6 @@ class MenusController extends Controller
     }
 
     public function store(Request $request){
-
 
         $this->validate($request, [
             'content' => 'required|min:3',
@@ -29,6 +29,9 @@ class MenusController extends Controller
             $path = $request->file('image')->storeAs('public/images', $filename);
         }
 
+        $array_category = Str::of($request->categories)->explode(',');
+        dd($array_category);
+
         $menu = Menu::create([
             'menuK' => $request->input('menuK'),
             'menuE' => $request->input('menuE'),
@@ -38,8 +41,16 @@ class MenusController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
-        dd($menu);
+        
+
+        $category = new Category;
 
         return $filename;
+    }
+    public function show($menu_id){
+
+        $menu = Menu::find($menu_id);
+
+        return view('happypies.show', ["menu"=>$menu]);
     }
 }

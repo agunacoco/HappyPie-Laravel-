@@ -26,7 +26,7 @@
 
             @include('layouts.navigation')
             <!-- Page Content -->
-            <div class="p-10">
+            <div class="p-10 px-10">
             <main id="app">
                 {{ $slot }}
             </main>

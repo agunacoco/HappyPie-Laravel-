@@ -44,6 +44,42 @@
         v-model="price"
       />
     </div>
+    <div class="form-group">
+      <label>Category</label>
+      <div class="flex">
+        <div class="form-check">
+          <input
+            v-model="checkedCategories"
+            value="cake"
+            class="form-check-input"
+            type="checkbox"
+            id="cake"
+          />
+          <label for="cake">Cake</label>
+        </div>
+        <div class="form-check ml-2">
+          <input
+            v-model="checkedCategories"
+            value="desserts"
+            class="form-check-input"
+            type="checkbox"
+            id="desserts"
+          />
+          <label for="desserts">Cookies/Pie</label>
+        </div>
+        <div class="form-check ml-2">
+          <input
+            v-model="checkedCategories"
+            value="drink"
+            class="form-check-input"
+            type="checkbox"
+            id="drink"
+          />
+          <label for="drink">Drink</label>
+        </div>
+      </div>
+    </div>
+    <div>체크한 이름: {{ checkedCategories }}</div>
 
     <div class="form-group">
       <label for="image">Picture</label>
@@ -60,8 +96,8 @@
     <div class="form-group">
       <img
         v-bind:src="imagePreview"
-        width="100"
-        height="100"
+        width="200"
+        height="200"
         v-show="showPreview"
       />
     </div>
@@ -82,6 +118,7 @@ export default {
       price: null,
       imagePreview: null,
       showPreview: false,
+      checkedCategories: [],
     };
   },
   methods: {
@@ -92,6 +129,7 @@ export default {
       formData.append("content", this.content);
       formData.append("price", this.price);
       formData.append("image", this.image);
+      formData.append("categories", this.checkedCategories);
       axios
         .post("/happypies/store", formData)
         .then((response) => {
@@ -100,6 +138,7 @@ export default {
           this.menuE = "";
           this.content = "";
           this.price = "";
+          this.checkedCategories = [];
           // this.image = "";
           const imageInput = document.querySelector("#image");
           imageInput.value = imageInput.defaultValue;
