@@ -18,4 +18,8 @@ class Menu extends Model
         'user_id',
     ];
 
+    public function categories(){
+        return $this->hasMany(Category::class); 
+    }
+
 }

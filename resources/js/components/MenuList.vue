@@ -1,28 +1,6 @@
 <template>
   <div class="card mb-3 p-20">
-    <div class="flex justify-between mb-3">
-      <ul class="nav justify-content-center">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">All</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Cake</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Drink</a>
-        </li>
-      </ul>
-
-      <form class="d-flex">
-        <input
-          class="form-control me-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-        />
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
+    <menu-nav @clickCate="changeMenu" />
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
       <menu-item
         class="flex justify-center"
@@ -37,10 +15,12 @@
 </template>
 
 <script>
-import MenuItem from "./MenuItem.vue";
-import MenuCreate from "./MenuCreate.vue";
+import MenuItem from "./MenuItem";
+import MenuCreate from "./MenuCreate";
+import MenuNav from "./MenuNav";
+
 export default {
-  components: { MenuItem, MenuCreate },
+  components: { MenuItem, MenuCreate, MenuNav },
   props: ["menus", "auth_user"],
   data() {
     return {
@@ -55,7 +35,7 @@ export default {
     },
     getMenu() {
       axios
-        .get("/happypies/index")
+        .get("/happypies/index?category=all")
         .then((response) => {
           console.log("getMenu 성공");
           this.menuitems = response.data;
@@ -63,6 +43,9 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    changeMenu(name) {
+      this.menuitems = name;
     },
   },
   created() {

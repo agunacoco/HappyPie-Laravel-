@@ -8,8 +8,6 @@ class HappypiesController extends Controller
 {
     public function index(){
 
-        $menus = Menu::all();
-
-        return view("happypies.menu", ["menus"=>$menus]);
+        return view("happypies.menu");
     }
 }
