@@ -133,7 +133,7 @@ export default {
       axios
         .post("/happypies/store", formData)
         .then((response) => {
-          console.log("성공");
+          console.log("이미지 미리보기 성공");
           this.menuK = "";
           this.menuE = "";
           this.content = "";
