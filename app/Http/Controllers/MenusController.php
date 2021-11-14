@@ -9,28 +9,31 @@ use Illuminate\Http\Request;
 class MenusController extends Controller
 {
     public function index(Request $request){
-
+        $category = $request->category;
         if($request->category){
-            $category = $request->category;
+            
             if ($category == 'all') {
                 $menus = Menu::latest('created_at')->get();
                 return $menus;
     
             }else if($category == 'cookiepie'){
                 $categories = Category::where('category','=', 'desserts')->pluck('menu_id');
-                $menus = Menu::find($categories);
+                $menus = Menu::latest('created_at')->find($categories);
                 return $menus;
     
             }else if($category == 'cake'){
                 $categories = Category::where('category','=', 'cake')->pluck('menu_id');
-                $menus = Menu::find($categories);
+                $menus = Menu::latest('created_at')->find($categories);
                 return $menus;
     
             }else if($category == 'drink'){
                 $categories = Category::where('category','=', 'drink')->pluck('menu_id');
-                $menus = Menu::find($categories);
+                $menus = Menu::latest('created_at')->find($categories);
                 return $menus;
             }
+        }else{
+            $menus = Menu::latest('created_at')->get();
+            return $menus;
         }
         if($request->search){
             $search = $request->search;
@@ -47,9 +50,11 @@ class MenusController extends Controller
             'menuK' => 'required',
             'menuE' => 'required',
             'price' => 'required', 
+            'image' => 'required', 
         ]);
 
         $filename=null;
+        $this->authorize('update', $comment);
 
         if($request->hasFile('image')){
             $filename = time().'_'.$request->file('image')->getClientOriginalName();
@@ -85,6 +90,22 @@ class MenusController extends Controller
         $menu = Menu::find($menu_id);
 
         return view('happypies.show', ["menu"=>$menu]);
+    }
+
+    public function destroy(Request $request, $menu_id){
+
+        $menu = Menu::find($menu_id);
+        if($request->user()->can('delete', $menu)){
+            $menu->delete();
+            return $menu;
+        } else{
+            abort(403);
+        }
+        return $menu;
+    }
+
+    public function update($menu_id){
+
     }
 
 }

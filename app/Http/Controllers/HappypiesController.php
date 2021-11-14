@@ -10,4 +10,8 @@ class HappypiesController extends Controller
 
         return view("happypies.menu");
     }
+
+    public function shoppingcart(){
+        return view("happypies.shoppingcart");
+    }
 }

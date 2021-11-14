@@ -20,6 +20,7 @@
           </p>
           <button>장바구니 담기</button>
           <button>주문하기</button>
+          <button @click="deleteMenu">삭제하기</button>
         </div>
       </div>
     </div>
@@ -27,10 +28,22 @@
 </template>
 
 <script>
-import Button from "../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Button.vue";
 export default {
-  components: { Button },
   props: ["menu"],
-  methods: {},
+  methods: {
+    deleteMenu() {
+      if (confirm("Are you sure?")) {
+        axios
+          .delete("/happypies/" + this.menu.id)
+          .then((response) => {
+            console.log(response.data);
+            this.$parent.getMenu;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+  },
 };
 </script>

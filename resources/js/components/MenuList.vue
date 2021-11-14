@@ -9,6 +9,7 @@
         :menuitem="menuitem"
       />
     </div>
+
     <button v-if="auth_user == 1" @click="btnClicked">Menu Create</button>
     <div v-if="numClick == true" class="card mb-3 p-10"><menu-create /></div>
   </div>
@@ -35,10 +36,11 @@ export default {
     },
     getMenu() {
       axios
-        .get("/happypies/index?category=all")
+        .get("/happypies/index")
         .then((response) => {
           console.log("getMenu 성공");
           this.menuitems = response.data;
+          console.log(this.menuitems);
         })
         .catch((error) => {
           console.log(error);
@@ -47,7 +49,11 @@ export default {
     changeMenu(name) {
       this.menuitems = name;
     },
+    pageClicked(url) {
+      this.$emit("pageClicked", url);
+    },
   },
+
   created() {
     // id를 모아 새로운 배열 만들고 새로 만든 배열을 userIdArray에 담는다.
     console.log("created 성공");

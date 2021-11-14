@@ -9,6 +9,7 @@
         id="menuK"
         placeholder="Menu Name"
         v-model="menuK"
+        required
       />
     </div>
     <div class="form-group">
@@ -20,6 +21,7 @@
         id="menuE"
         placeholder="Menu Name"
         v-model="menuE"
+        required
       />
     </div>
 
@@ -30,6 +32,7 @@
         class="form-control"
         v-model="content"
         placeholder="content"
+        required
       ></textarea>
     </div>
 
@@ -42,6 +45,7 @@
         id="price"
         placeholder="Price"
         v-model="price"
+        required
       />
     </div>
     <div class="form-group">
@@ -79,8 +83,6 @@
         </div>
       </div>
     </div>
-    <div>체크한 이름: {{ checkedCategories }}</div>
-
     <div class="form-group">
       <label for="image">Picture</label>
       <input
@@ -90,6 +92,7 @@
         class="form-control-file"
         id="image"
         @change="onFileChange"
+        required
       />
     </div>
 
@@ -111,12 +114,12 @@
 export default {
   data() {
     return {
-      image: null,
-      menuK: null,
-      menuE: null,
-      content: null,
-      price: null,
-      imagePreview: null,
+      image: "",
+      menuK: "",
+      menuE: "",
+      content: "",
+      price: "",
+      imagePreview: "",
       showPreview: false,
       checkedCategories: [],
     };

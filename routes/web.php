@@ -27,5 +27,8 @@ Route::get('/happypies/menu', [HappypiesController::class, 'index'])->name('happ
 Route::get('/happypies/index', [MenusController::class, 'index'])->name('happypie.index');
 Route::post('/happypies/store', [MenusController::class, 'store'])->name('happypie.store');
 Route::get('/happypies/show/{menu_id}', [MenusController::class, 'show'])->name('happypie.show');
+Route::get('/happypies/shoppingcart', [HappypiesController::class, 'shoppingcart'])->name('happypie.shoppingcart');
+Route::delete('/happypies/{menu_id}', [MenusController::class, 'destroy'])->name('happypie.destroy');
+Route::patch('/happypies/{menu_id}', [MenusController::class, 'update'])->name('happypie.update');
 
 require __DIR__.'/auth.php';
