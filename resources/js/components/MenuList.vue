@@ -36,7 +36,7 @@ export default {
     },
     getMenu() {
       axios
-        .get("/happypies/index")
+        .get("/happypies/index?category=all")
         .then((response) => {
           console.log("getMenu 성공");
           this.menuitems = response.data;
