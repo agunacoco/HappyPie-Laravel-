@@ -147,7 +147,16 @@ export default {
           imageInput.value = imageInput.defaultValue;
           this.imagePreview = null;
           this.showPreview = false;
-          this.$parent.getMenu();
+          Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Menu 작성완료",
+            showConfirmButton: false,
+            timer: 1700,
+          }).then((result) => {
+            this.$parent.getMenu();
+            window.scrollTo(0, 0);
+          });
         })
         .catch((error) => {
           console.log(error);

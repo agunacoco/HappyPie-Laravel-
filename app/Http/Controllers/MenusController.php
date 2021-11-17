@@ -5,6 +5,7 @@ use App\Models\Menu;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MenusController extends Controller
 {
@@ -99,15 +100,35 @@ class MenusController extends Controller
         }
     }
 
-    public function update($menu_id){
+    public function update(Request $request, $menu_id){
+
+        $this->validate($request, [
+            'content' => 'required|min:3',
+            'menuK' => 'required',
+            'menuE' => 'required',
+            'price' => 'required', 
+        ]);
 
         $menu = Menu::find($menu_id);
-        if($request->user()->can('update', $menu)){
-            $menu->delete();
-            return $menu;
-        } else{
-            abort(403);
+        $this->authorize('update', $menu);
+
+        if($request->hasFile('image')){
+            Storage::delete('public/images/'.$menu->image);
+            $filename = time().'_'.$request->file('image')->getClientOriginalName();
+            $path = $request->file('image')->storeAs('public/images', $filename);
+            $menu->image = $filename;
+            $menu->save();
         }
+
+        $menu->update([
+            'menuK' => $request->input('menuK'),
+            'menuE' => $request->input('menuE'),
+            'price' => $request->input('price'),
+            'content' => $request->input('content'),
+        ]);
+
+        return $menu;
+
     }
 
 }

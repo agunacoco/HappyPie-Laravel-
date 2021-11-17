@@ -40,7 +40,7 @@ export default {
         .then((response) => {
           console.log("getMenu 성공");
           this.menuitems = response.data;
-          console.log(this.menuitems);
+          this.numClick = false;
         })
         .catch((error) => {
           console.log(error);

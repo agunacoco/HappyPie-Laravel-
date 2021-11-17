@@ -66,14 +66,9 @@
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log In') }}
-                            </x-dropdown-link>
+                            </x-dropdown-link>\
                         </form>
                         @endif
-                        <x-dropdown-link :href="route('happypie.shoppingcart')" >
-                            {{ __('My Page') }}
-                        </x-dropdown-link>
-                        
-
                         
                     </x-slot>
                 </x-dropdown>
