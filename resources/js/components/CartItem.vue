@@ -20,10 +20,13 @@
               {{ menu.menuE }}
             </p>
             <p class="card-text">{{ menu.price }}원</p>
-            <button>-</button>
-            <button>개수</button>
-            <button>+</button>
-            <button>삭제</button>
+
+            <div class="flex">
+              <button @click="clickCount('plus')">-</button>
+              <p>1</p>
+              <button @click="clickCount('minus')">+</button>
+              <button class="ml-2" @click="deletedcart">삭제</button>
+            </div>
           </div>
         </div>
       </div>
@@ -34,6 +37,37 @@
 <script>
 export default {
   props: ["menu"],
+  data() {
+    return {
+      unit: "",
+    };
+  },
+  methods: {
+    clickCount(unit) {
+      if (unit == "plus") {
+        this.unit;
+      }
+    },
+    deletedcart() {
+      if (confirm("Are you sure?")) {
+        axios
+          .delete("/happypies/cart/" + this.menu.id)
+          .then((response) => {
+            console.log(response.data);
+            Swal.fire({
+              position: "top-center",
+              icon: "success",
+              title: "장바구니 상품 빼기",
+              showConfirmButton: false,
+              timer: 1700,
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+  },
   created() {
     console.log(this.menu);
   },

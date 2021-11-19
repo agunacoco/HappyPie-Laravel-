@@ -84,9 +84,10 @@ class MenusController extends Controller
     }
     public function show($menu_id){
 
+        $categories = Category::where('menu_id',$menu_id)->get();
         $menu = Menu::with('users')->where('id' , $menu_id)->first();
 
-        return view('happypies.show', ["menu"=>$menu]);
+        return view('happypies.show', ["menu"=>$menu, 'categories'=>$categories]);
     }
 
     public function destroy(Request $request, $menu_id){
@@ -127,6 +128,20 @@ class MenusController extends Controller
             'content' => $request->input('content'),
         ]);
 
+        $name = $request->categories;
+        $category = new Category;
+
+        if($name){
+            $array_category = Str::of($name)->explode(',');
+            for($i = 0; $i<count($array_category); $i++){
+                if($category){
+                    $category->where("menu_id", $menu_id)->delete();
+                }
+                $category->category = $array_category[$i];
+                $category->menu_id = $menu_id;
+                $category->save();     
+            }
+        }
         return $menu;
 
     }

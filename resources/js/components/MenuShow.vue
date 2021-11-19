@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <menu-edit v-show="showEdit" :menu="menu" />
+    <menu-edit v-show="showEdit" :menu="menu" :categories="categories" />
   </div>
 </template>
 
@@ -34,7 +34,7 @@
 import MenuEdit from "./MenuEdit.vue";
 export default {
   components: { MenuEdit },
-  props: ["menu", "auth_user"],
+  props: ["menu", "auth_user", "categories"],
   data() {
     return {
       showEdit: false,
@@ -60,7 +60,7 @@ export default {
         });
       } else {
         axios
-          .post("/happypies/store/" + this.menu.id)
+          .post("/happypies/cart/store/" + this.menu.id)
           .then((response) => {
             console.log("장바구니");
             this.userIdArray.push(response.data.id);

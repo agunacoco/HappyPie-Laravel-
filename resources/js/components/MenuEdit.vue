@@ -57,6 +57,42 @@
             required
           ></textarea>
         </div>
+
+        <div class="form-group">
+          <label>Category</label>
+          <div class="flex">
+            <div class="form-check">
+              <input
+                v-model="checkedCategories"
+                value="cake"
+                class="form-check-input"
+                type="checkbox"
+                id="cake"
+              />
+              <label for="cake">Cake</label>
+            </div>
+            <div class="form-check ml-2">
+              <input
+                v-model="checkedCategories"
+                value="desserts"
+                class="form-check-input"
+                type="checkbox"
+                id="desserts"
+              />
+              <label for="desserts">Cookies/Pie</label>
+            </div>
+            <div class="form-check ml-2">
+              <input
+                v-model="checkedCategories"
+                value="drink"
+                class="form-check-input"
+                type="checkbox"
+                id="drink"
+              />
+              <label for="drink">Drink</label>
+            </div>
+          </div>
+        </div>
         <div class="card-text">
           <label for="price">Price</label><br />
           <input
@@ -77,7 +113,7 @@
 
 <script>
 export default {
-  props: ["menu"],
+  props: ["menu", "categories"],
   data() {
     return {
       image: "",
@@ -98,6 +134,7 @@ export default {
       formData.append("content", this.content);
       formData.append("price", this.price);
       formData.append("image", this.image);
+      formData.append("categories", this.checkedCategories);
       formData.append("_method", "PATCH");
       axios
         .post("/happypies/" + this.menu.id, formData)
@@ -106,7 +143,6 @@ export default {
           // this.image = "";
           const imageInput = document.querySelector("#image");
           imageInput.value = imageInput.defaultValue;
-          this.imagePreview = "";
           Swal.fire({
             position: "top-center",
             icon: "success",
@@ -139,10 +175,16 @@ export default {
         }
       }
     },
+    getCategories() {
+      this.categories.map((e) => {
+        this.checkedCategories.push(e.category);
+      });
+    },
   },
   created() {
     console.log("hah");
     this.imagePreview = "/storage/images/" + this.menu.image;
+    this.getCategories();
   },
 };
 </script>

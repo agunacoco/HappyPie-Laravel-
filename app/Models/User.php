@@ -43,7 +43,7 @@ class User extends Authenticatable
     ];
 
     public function menus(){
-        return $this->belongsToMany(Menu::class);
+        return $this->belongsToMany(Menu::class)->withTimestamps();
     }
     
 }

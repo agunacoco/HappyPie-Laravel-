@@ -21,4 +21,10 @@ class CartsController extends Controller
         
         return $menu->users()->save(auth()->user());
     }
+
+    public function destroy($menu_id){
+        $menu = Menu::find($menu_id);
+
+        return menu;
+    }
 }
