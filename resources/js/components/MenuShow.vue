@@ -39,18 +39,49 @@ export default {
     return {
       showEdit: false,
       viewShow: true,
+      userIdArray: [],
+      cart: false,
     };
   },
   methods: {
     getCart() {
-      Swal.fire({
-        position: "top-center",
-        icon: "success",
-        title: "장바구니에 상품이 담겼습니다.",
-        confirmButtonText: "장바구니 바로가기",
-        showConfirmButton: true,
-        timer: 1700,
-      }).then((result) => {});
+      if (this.cart) {
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "이미 장바구니에 담겨있습니다.",
+          confirmButtonText: "장바구니 바로가기",
+          showConfirmButton: true,
+          timer: 1700,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.replace("/happypies/shoppingcart");
+          }
+        });
+      } else {
+        axios
+          .post("/happypies/store/" + this.menu.id)
+          .then((response) => {
+            console.log("장바구니");
+            this.userIdArray.push(response.data.id);
+            this.checkLikes();
+            Swal.fire({
+              position: "top-center",
+              icon: "success",
+              title: "장바구니에 상품이 담겼습니다.",
+              confirmButtonText: "장바구니 바로가기",
+              showConfirmButton: true,
+              timer: 1700,
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.replace("/happypies/shoppingcart");
+              }
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
     deletedMenu() {
       if (confirm("Are you sure?")) {
@@ -77,10 +108,17 @@ export default {
       this.showEdit = true;
       this.viewShow = false;
     },
+    checkLikes() {
+      this.cart = this.userIdArray.includes(this.auth_user);
+    },
   },
   created() {
     this.showEdit = false;
     this.viewShow = true;
+    this.userIdArray = this.menu.users.map((elem) => {
+      return elem.id;
+    });
+    this.checkLikes();
   },
 };
 </script>

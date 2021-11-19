@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenusController;
 use App\Http\Controllers\HappypiesController;
+use App\Http\Controllers\CartsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,8 +28,9 @@ Route::get('/happypies/menu', [HappypiesController::class, 'index'])->name('happ
 Route::get('/happypies/index', [MenusController::class, 'index'])->name('happypie.index');
 Route::post('/happypies/store', [MenusController::class, 'store'])->name('happypie.store');
 Route::get('/happypies/show/{menu_id}', [MenusController::class, 'show'])->name('happypie.show');
-Route::get('/happypies/shoppingcart', [HappypiesController::class, 'shoppingcart'])->name('happypie.shoppingcart');
 Route::delete('/happypies/{menu_id}', [MenusController::class, 'destroy'])->name('happypie.destroy');
 Route::patch('/happypies/{menu_id}', [MenusController::class, 'update'])->name('happypie.update');
+Route::get('/happypies/shoppingcart', [CartsController::class, 'index'])->name('cart.index');
+Route::post('/happypies/store/{menu_id}', [CartsController::class, 'store'])->name('cart.store');
 
 require __DIR__.'/auth.php';

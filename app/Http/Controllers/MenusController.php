@@ -84,7 +84,7 @@ class MenusController extends Controller
     }
     public function show($menu_id){
 
-        $menu = Menu::find($menu_id);
+        $menu = Menu::with('users')->where('id' , $menu_id)->first();
 
         return view('happypies.show', ["menu"=>$menu]);
     }

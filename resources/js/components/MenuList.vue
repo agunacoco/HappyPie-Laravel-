@@ -4,8 +4,8 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
       <menu-item
         class="flex justify-center"
-        v-for="(menuitem, index) in menuitems"
-        :key="index"
+        v-for="menuitem in menuitems"
+        :key="menuitem.id"
         :menuitem="menuitem"
       />
     </div>
