@@ -22,9 +22,9 @@
             <p class="card-text">{{ menu.price }}원</p>
 
             <div class="flex">
-              <button @click="clickCount('plus')">-</button>
-              <p>1</p>
-              <button @click="clickCount('minus')">+</button>
+              <button @click="clickCountMinus">-</button>
+              <p>{{ unit }}</p>
+              <button @click="clickCountPlus">+</button>
               <button class="ml-2" @click="deletedcart">삭제</button>
             </div>
           </div>
@@ -39,14 +39,15 @@ export default {
   props: ["menu"],
   data() {
     return {
-      unit: "",
+      unit: 1,
     };
   },
   methods: {
-    clickCount(unit) {
-      if (unit == "plus") {
-        this.unit;
-      }
+    clickCountMinus() {
+      this.unit--;
+    },
+    clickCountPlus() {
+      this.unit++;
     },
     deletedcart() {
       if (confirm("Are you sure?")) {

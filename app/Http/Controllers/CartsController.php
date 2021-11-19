@@ -9,10 +9,15 @@ class CartsController extends Controller
 {
     public function index(){
 
-        $userid = auth()->user()->id;
-        $menus = User::find($userid)->menus()->get();
+        if(auth()->user()){
+            $userid = auth()->user()->id;
+            $menus = User::find($userid)->menus()->get();
 
-        return view("happypies.shoppingcart", ['menus'=>$menus]);
+            return view("happypies.shoppingcart", ['menus'=>$menus]);
+        }else{
+            return view("happypies.shoppingcart");
+        }
+        
     }
 
     public function store($menu_id){
@@ -22,9 +27,9 @@ class CartsController extends Controller
         return $menu->users()->save(auth()->user());
     }
 
-    public function destroy($menu_id){
-        $menu = Menu::find($menu_id);
+    // public function destroy($menu_id){
+    //     $menu = Menu::find($menu_id);
 
-        return menu;
-    }
+    //     return menu;
+    // }
 }
