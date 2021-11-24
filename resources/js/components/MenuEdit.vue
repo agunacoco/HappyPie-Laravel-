@@ -140,7 +140,6 @@ export default {
         .post("/happypies/" + this.menu.id, formData)
         .then((response) => {
           console.log("update 성공");
-          // this.image = "";
           const imageInput = document.querySelector("#image");
           imageInput.value = imageInput.defaultValue;
           Swal.fire({

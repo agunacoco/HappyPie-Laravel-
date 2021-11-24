@@ -12,11 +12,9 @@ class CartsController extends Controller
         if(auth()->user()){
             $userid = auth()->user()->id;
             $menus = User::find($userid)->menus()->get();
-
-            return view("happypies.shoppingcart", ['menus'=>$menus]);
-        }else{
-            return view("happypies.shoppingcart");
+            return $menus;
         }
+
         
     }
 
@@ -27,9 +25,30 @@ class CartsController extends Controller
         return $menu->users()->save(auth()->user());
     }
 
-    // public function destroy($menu_id){
-    //     $menu = Menu::find($menu_id);
+    public function update(Request $request, $menu_id){
+        $count = $request->count;
+        if($count){   
+            if ($count == "plus") {
+                $userid = auth()->user()->id;
+                $originalCount=User::find($userid)->menus()->where('menu_id',$menu_id)->value('count');
+                $value=$originalCount+1;
+                $cart = User::find($userid)->menus()->updateExistingPivot($menu_id, ['count' => $value]);
+                return $value;
+            } else if($count == "minus"){
+                $userid = auth()->user()->id;
+                $originalCount=User::find($userid)->menus()->where('menu_id',$menu_id)->value('count');
+                $value=$originalCount-1;
+                $cart = User::find($userid)->menus()->updateExistingPivot($menu_id, ['count' => $value]);
+                return $value;
+            }
+        }
+    }
 
-    //     return menu;
-    // }
+    public function destroy($menu_id){
+
+        $user = User::find(auth()->user()->id);
+        $user->menus()->detach($menu_id);
+
+        return $user;
+    }
 }

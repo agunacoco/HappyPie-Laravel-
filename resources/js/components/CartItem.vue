@@ -3,7 +3,7 @@
     <div class="card">
       <div class="row">
         <div class="col-md-5">
-          <a>
+          <a @click="getMenuShow" :href="link">
             <img
               :src="'/storage/images/' + menu.image"
               class="card-img-top"
@@ -19,7 +19,7 @@
             <p class="text-sm card-text">
               {{ menu.menuE }}
             </p>
-            <p class="card-text">{{ menu.price }}원</p>
+            <p class="card-text">{{ menu.price * unit }}원</p>
 
             <div class="flex">
               <button @click="clickCountMinus">-</button>
@@ -39,15 +39,35 @@ export default {
   props: ["menu"],
   data() {
     return {
-      unit: 1,
+      unit: this.menu.pivot.count,
+      link: "/happypies/show/",
     };
   },
   methods: {
+    getMenuShow() {
+      this.link = this.link + this.menu.id;
+    },
     clickCountMinus() {
-      this.unit--;
+      axios
+        .patch("/happypies/cart/count/" + this.menu.id + "/?count=minus")
+        .then((response) => {
+          console.log("장바구니 개수--");
+          this.unit = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     clickCountPlus() {
-      this.unit++;
+      axios
+        .patch("/happypies/cart/count/" + this.menu.id + "/?count=plus")
+        .then((response) => {
+          console.log("장바구니 개수++");
+          this.unit = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     deletedcart() {
       if (confirm("Are you sure?")) {
@@ -61,6 +81,8 @@ export default {
               title: "장바구니 상품 빼기",
               showConfirmButton: false,
               timer: 1700,
+            }).then((result) => {
+              this.$parent.getCart();
             });
           })
           .catch((error) => {
@@ -69,8 +91,6 @@ export default {
       }
     },
   },
-  created() {
-    console.log(this.menu);
-  },
+  created() {},
 };
 </script>

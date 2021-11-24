@@ -17,6 +17,7 @@ class CreateMenuUserTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');  
             $table->foreignId('menu_id')->constrained()->onDelete('cascade');  
+            $table->unsignedInteger('count')->default(1);
             $table->timestamps();
         });
     }
