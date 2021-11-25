@@ -51,8 +51,8 @@ export default {
       axios
         .patch("/happypies/cart/count/" + this.menu.id + "/?count=minus")
         .then((response) => {
-          console.log("장바구니 개수--");
           this.unit = response.data;
+          this.$emit("itempay");
         })
         .catch((error) => {
           console.log(error);
@@ -64,6 +64,7 @@ export default {
         .then((response) => {
           console.log("장바구니 개수++");
           this.unit = response.data;
+          this.$emit("itempay");
         })
         .catch((error) => {
           console.log(error);
@@ -91,6 +92,8 @@ export default {
       }
     },
   },
-  created() {},
+  created() {
+    this.$emit("itempay");
+  },
 };
 </script>

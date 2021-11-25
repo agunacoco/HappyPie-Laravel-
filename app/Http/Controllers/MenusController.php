@@ -96,7 +96,7 @@ class MenusController extends Controller
         if($request->user()->can('delete', $menu)){
             $menu->delete();
             return $menu;
-        } else{
+        } else {
             abort(403);
         }
     }
@@ -128,15 +128,18 @@ class MenusController extends Controller
             'content' => $request->input('content'),
         ]);
 
-        $name = $request->categories;
-        $category = new Category;
-
+        $name = $request->categories; 
+        $nowcategory = Category::where("menu_id", $menu_id)->get();       
+        
         if($name){
-            $array_category = Str::of($name)->explode(',');
-            for($i = 0; $i<count($array_category); $i++){
-                if($category){
-                    $category->where("menu_id", $menu_id)->delete();
+            if($nowcategory){
+                for($i = 0; $i<count($nowcategory); $i++){    
+                    $nowcategory[$i]->delete();
                 }
+            }
+            $array_category = Str::of($name)->explode(',');
+            for($i = 0; $i<count($array_category); $i++){  
+                $category = new Category;  
                 $category->category = $array_category[$i];
                 $category->menu_id = $menu_id;
                 $category->save();     

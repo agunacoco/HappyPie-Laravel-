@@ -7,6 +7,7 @@
           v-for="cartItem in cartItems"
           :key="cartItem.id"
           :menu="cartItem"
+          @itempay="getCart()"
         />
       </div>
       <div class="col-sm-4">
@@ -14,7 +15,7 @@
           <p class="text-xl font-extrabold">주문내역</p>
           <div class="flex">
             <p>총 상품금액</p>
-            <p>20000원</p>
+            <p>{{ total }}</p>
           </div>
           <button
             @click="getPayment"
@@ -37,18 +38,26 @@ export default {
   data() {
     return {
       cartItems: [],
+      payItems: [],
+      total: 0,
     };
   },
   methods: {
+    // getTotalMoney(menu) {
+    //   console.log("pay");
+    //   this.payItems.push(menu.price * menu.pivot.count);
+    //   this.total = this.payItems.reduce(function add(sum, currValue) {
+    //     return sum + currValue;
+    //   }, 0);
+    //   console.log(this.total);
+    // },
     getPayment() {
-      const config = {
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-          Authorization: "KakaoAK 2aec59941467f41efd86c2720cdb0c0b",
-        },
+      const headers = {
+        "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        Authorization: "KakaoAK 2aec59941467f41efd86c2720cdb0c0b",
       };
       const params = new URLSearchParams();
-      params.append("cid", "TC0ONETIME"); // 테스트 cid 입니다. (원래는 제휴하고 받아야함)
+      params.append("cid", "TC0ONETIME");
       params.append("partner_order_id", "partner_order_id");
       params.append("partner_user_id", "partner_user_id");
       params.append("item_name", "테스트 상품");
@@ -60,7 +69,7 @@ export default {
       params.append("fail_url", "http://localhost:8080/");
       params.append("cancel_url", "http://localhost:8080/");
       axios
-        .post("https://kapi.kakao.com/v1/payment/ready", params, config)
+        .post("/v1/payment/ready", params, headers)
         .then((response) => {
           console.log(response.data);
         })
@@ -75,15 +84,25 @@ export default {
         .then((response) => {
           console.log("cart list 성공");
           this.cartItems = response.data;
+          this.cartItemChanged();
         })
         .catch((error) => {
           console.log(error);
         });
     },
+    cartItemChanged() {
+      this.total = 0;
+      this.cartItems.forEach((cartItem) => {
+        this.total += cartItem.price * cartItem.pivot.count;
+        console.log(cartItem.pivot.count);
+        console.log(this.total);
+      });
+    },
   },
   created() {
     console.log("cart입니다");
     this.getCart();
+    this.cartItemChanged();
   },
 };
 </script>
