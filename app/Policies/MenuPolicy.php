@@ -18,7 +18,7 @@ class MenuPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        
     }
 
     /**
@@ -30,7 +30,7 @@ class MenuPolicy
      */
     public function view(User $user, Menu $menu)
     {
-        return $user->id == 1;
+        
     }
 
     /**

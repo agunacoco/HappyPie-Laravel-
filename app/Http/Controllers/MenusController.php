@@ -112,7 +112,7 @@ class MenusController extends Controller
 
         $menu = Menu::find($menu_id);
         $this->authorize('update', $menu);
-
+        
         if($request->hasFile('image')){
             Storage::delete('public/images/'.$menu->image);
             $filename = time().'_'.$request->file('image')->getClientOriginalName();

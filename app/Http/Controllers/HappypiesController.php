@@ -22,5 +22,15 @@ class HappypiesController extends Controller
         }
     }
 
+    public function mypage(){
+        return view("happypies.mypage");
+    }
+
+    public function ordersheet(){
+        if(auth()->user()->id == 1){
+            return view("happypies.ordersheet");
+        }
+    }
+
     
 }

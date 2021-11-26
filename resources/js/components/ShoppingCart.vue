@@ -69,7 +69,7 @@ export default {
       params.append("fail_url", "http://localhost:8080/");
       params.append("cancel_url", "http://localhost:8080/");
       axios
-        .post("/v1/payment/ready", params, headers)
+        .post("https://kapi.kakao.com/v1/payment/ready", params, headers)
         .then((response) => {
           console.log(response.data);
         })
