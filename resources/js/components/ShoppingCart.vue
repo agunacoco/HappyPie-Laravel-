@@ -52,10 +52,6 @@ export default {
     //   console.log(this.total);
     // },
     getPayment() {
-      const headers = {
-        "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
-        Authorization: "KakaoAK 2aec59941467f41efd86c2720cdb0c0b",
-      };
       const params = new URLSearchParams();
       params.append("cid", "TC0ONETIME");
       params.append("partner_order_id", "partner_order_id");
@@ -69,9 +65,9 @@ export default {
       params.append("fail_url", "http://localhost:8080/");
       params.append("cancel_url", "http://localhost:8080/");
       axios
-        .post("https://kapi.kakao.com/v1/payment/ready", params, headers)
+        .post("/payment/call", params)
         .then((response) => {
-          console.log(response.data);
+          console.log("payment 성공");
         })
         .catch((error) => {
           console.log(error);

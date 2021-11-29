@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenusController;
 use App\Http\Controllers\HappypiesController;
 use App\Http\Controllers\CartsController;
+use App\Http\Controllers\PaymentsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,7 +36,8 @@ Route::get('/happypies/shoppingcart/list', [CartsController::class, 'index'])->n
 Route::post('/happypies/cart/store/{menu_id}', [CartsController::class, 'store'])->name('cart.store');
 Route::patch('/happypies/cart/count/{menu_id}', [CartsController::class, 'update'])->name('cart.update');
 Route::delete('/happypies/cart/{menu_id}', [CartsController::class, 'destroy'])->name('cart.destroy');
-Route::get('happypies/mypage', [HappypiesController::class, 'mypage'])->middleware('auth')->name('happypie.mypage');
-Route::get('happypies/ordersheet', [HappypiesController::class, 'ordersheet'])->middleware('auth')->name('happypie.ordersheet');
+Route::get('/happypies/mypage', [HappypiesController::class, 'mypage'])->middleware('auth')->name('happypie.mypage');
+Route::get('/happypies/ordersheet', [HappypiesController::class, 'ordersheet'])->middleware('auth')->name('happypie.ordersheet');
+
 
 require __DIR__.'/auth.php';

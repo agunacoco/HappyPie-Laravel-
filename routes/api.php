@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\PaymentsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,4 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('/payment/')->group(function(){
+    Route::post('report', [PaymentsController::class, 'create'])->name('payment.create');
+    Route::get('call', [PaymentsController::class, 'callpayment'])->name('payment.call');
 });
