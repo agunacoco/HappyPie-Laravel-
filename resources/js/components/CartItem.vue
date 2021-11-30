@@ -92,8 +92,6 @@ export default {
       }
     },
   },
-  created() {
-    this.$emit("itempay");
-  },
+  created() {},
 };
 </script>

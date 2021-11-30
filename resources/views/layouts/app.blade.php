@@ -17,6 +17,7 @@
         <!-- Scripts -->
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="bg-yellow-100 min-h-screen">  

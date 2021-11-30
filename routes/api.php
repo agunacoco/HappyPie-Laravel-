@@ -19,6 +19,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('/payment/')->group(function(){
-    Route::post('report', [PaymentsController::class, 'create'])->name('payment.create');
     Route::get('call', [PaymentsController::class, 'callpayment'])->name('payment.call');
+    Route::post('success', [PaymentsController::class, 'store'])->name('payment.store'); 
+});
+
+Route::prefix('/address/')->group(function(){
+    Route::get('call', [AddressController::class, 'calladdress'])->name('calladdress.call');
+    Route::post('success', [AddresssController::class, 'store'])->name('payment.store'); 
 });

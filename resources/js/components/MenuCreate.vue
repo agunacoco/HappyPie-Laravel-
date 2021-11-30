@@ -84,6 +84,17 @@
       </div>
     </div>
     <div class="form-group">
+      <label for="images">Picture</label>
+      <input
+        multiple
+        type="file"
+        name="images[]"
+        class="form-control-file"
+        id="images"
+        required
+      />
+    </div>
+    <div class="form-group">
       <label for="image">Picture</label>
       <input
         multiple

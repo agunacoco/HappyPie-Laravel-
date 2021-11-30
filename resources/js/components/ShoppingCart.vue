@@ -14,16 +14,46 @@
         <div class="card-body">
           <p class="text-xl font-extrabold">주문내역</p>
           <div class="flex">
-            <p>총 상품금액</p>
-            <p>{{ total }}</p>
+            <p>총 상품개수</p>
+            <p>{{ itemsId.length }}개</p>
           </div>
+          <div class="flex">
+            <p>배송비</p>
+            <p>{{ shippingfee }}원</p>
+          </div>
+          <div class="flex">
+            <p>상품금액</p>
+            <p>{{ total }}원</p>
+          </div>
+          <div class="flex">
+            <p>총 결제 금액</p>
+            <p>{{ total + shippingfee }}원</p>
+          </div>
+          <button @click="getAddressSet">결제하기</button>
           <button
+            v-show="showBtn"
             @click="getPayment"
             type="button"
             class="btn btn-outline-success w-full"
           >
             결제하기
           </button>
+
+          <div>
+            <h1>
+              우편번호: <span>{{ zip }}</span>
+            </h1>
+            <h1>
+              기본주소: <span>{{ addr1 }}</span>
+            </h1>
+            <h1>
+              상세주소: <span>{{ addr2 }}</span>
+            </h1>
+            <div ref="embed"></div>
+            <button class="btn btn-outline-success w-full" @click="showApi">
+              주소API 호출
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -38,36 +68,52 @@ export default {
   data() {
     return {
       cartItems: [],
-      payItems: [],
+      itemsId: [],
+      shippingfee: 2500,
       total: 0,
+      showBtn: false,
+      zip: "",
+      addr1: "",
+      addr2: "",
     };
   },
   methods: {
-    // getTotalMoney(menu) {
-    //   console.log("pay");
-    //   this.payItems.push(menu.price * menu.pivot.count);
-    //   this.total = this.payItems.reduce(function add(sum, currValue) {
-    //     return sum + currValue;
-    //   }, 0);
-    //   console.log(this.total);
-    // },
+    showApi() {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          let fullRoadAddr = data.roadAddress;
+          let extraRoadAddr = "";
+          if (data.bname !== "" && /[동|로|가]$/g.test(data.bname)) {
+            extraRoadAddr += data.bname;
+          }
+          if (data.buildingName !== "" && data.apartment === "Y") {
+            extraRoadAddr +=
+              extraRoadAddr !== ""
+                ? ", " + data.buildingName
+                : data.buildingName;
+          }
+          if (extraRoadAddr !== "") {
+            extraRoadAddr = " (" + extraRoadAddr + ")";
+          }
+          if (fullRoadAddr !== "") {
+            fullRoadAddr += extraRoadAddr;
+          }
+          this.zip = data.zonecode; //5자리 새우편번호 사용
+          this.addr1 = fullRoadAddr;
+        },
+      }).embed(this.$refs.embed);
+    },
+
+    getAddressSet() {
+      this.showBtn = true;
+    },
+
     getPayment() {
-      const params = new URLSearchParams();
-      params.append("cid", "TC0ONETIME");
-      params.append("partner_order_id", "partner_order_id");
-      params.append("partner_user_id", "partner_user_id");
-      params.append("item_name", "테스트 상품");
-      params.append("quantity", "1");
-      params.append("total_amount", "110");
-      params.append("tax_free_amount", "0");
-      params.append("vat_amount", "10");
-      params.append("approval_url", "http://localhost:8080/");
-      params.append("fail_url", "http://localhost:8080/");
-      params.append("cancel_url", "http://localhost:8080/");
       axios
-        .post("/payment/call", params)
+        .get("/api/payment/call")
         .then((response) => {
-          console.log("payment 성공");
+          console.log("kakaopay 성공");
+          window.location.href = response.data.next_redirect_pc_url;
         })
         .catch((error) => {
           console.log(error);
@@ -81,6 +127,7 @@ export default {
           console.log("cart list 성공");
           this.cartItems = response.data;
           this.cartItemChanged();
+          this.itemId();
         })
         .catch((error) => {
           console.log(error);
@@ -88,11 +135,17 @@ export default {
     },
     cartItemChanged() {
       this.total = 0;
+      this.itemsCount = 0;
       this.cartItems.forEach((cartItem) => {
         this.total += cartItem.price * cartItem.pivot.count;
-        console.log(cartItem.pivot.count);
-        console.log(this.total);
       });
+    },
+    itemId() {
+      this.itemsId = [];
+      this.cartItems.forEach((cartItem) => {
+        this.itemsId.push(cartItem.id);
+      });
+      console.log(this.itemsId);
     },
   },
   created() {
