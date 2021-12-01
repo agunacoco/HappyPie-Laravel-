@@ -38,6 +38,6 @@ Route::patch('/happypies/cart/count/{menu_id}', [CartsController::class, 'update
 Route::delete('/happypies/cart/{menu_id}', [CartsController::class, 'destroy'])->name('cart.destroy');
 Route::get('/happypies/mypage', [HappypiesController::class, 'mypage'])->middleware('auth')->name('happypie.mypage');
 Route::get('/happypies/ordersheet', [HappypiesController::class, 'ordersheet'])->middleware('auth')->name('happypie.ordersheet');
-
+Route::get('/happypies/payment/call', [HappypiesController::class, 'payhistory'])->middleware('auth')->name('happypie.payhistory');
 
 require __DIR__.'/auth.php';

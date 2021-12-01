@@ -19,7 +19,7 @@
             <small class="text-muted">{{ menu.price }}</small>
           </p>
           <button @click="getCart">장바구니 담기</button>
-          <button>주문하기</button>
+          <button @click="getPayment">주문하기</button>
 
           <button v-if="auth_user == 1" @click="deletedMenu">삭제하기</button>
           <button v-if="auth_user == 1" @click="getEdit">수정하기</button>
@@ -39,48 +39,118 @@ export default {
     return {
       showEdit: false,
       viewShow: true,
-      userIdArray: [],
+      userIdArray: [], // menu를 장바구니에 담은 사용자ID
       cart: false,
     };
   },
   methods: {
-    getCart() {
-      if (this.cart) {
+    getPayment() {
+      if (this.auth_user) {
+        if (this.cart) {
+          axios
+            .patch("/happypies/cart/count/" + this.menu.id + "/?count=plus")
+            .then((response) => {
+              console.log("장바구니 개수++");
+              axios
+                .get("/api/payment/call")
+                .then((response) => {
+                  console.log("kakaopay 성공");
+                  window.location.href = response.data.next_redirect_pc_url;
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          axios
+            .post("/happypies/cart/store/" + this.menu.id)
+            .then((response) => {
+              this.userIdArray.push(response.data.id);
+              this.checkLikes();
+              axios
+                .get("/api/payment/call")
+                .then((response) => {
+                  console.log("kakaopay 성공");
+                  window.location.href = response.data.next_redirect_pc_url;
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      } else {
         Swal.fire({
           position: "top-center",
           icon: "success",
-          title: "이미 장바구니에 담겨있습니다.",
-          confirmButtonText: "장바구니 바로가기",
+          title: "로그인을 해주세요",
+          confirmButtonText: "로그인 바로가기",
           showConfirmButton: true,
-          timer: 1700,
+          timer: 3000,
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.replace("/happypies/shoppingcart");
+            window.location.href = "/login";
           }
         });
-      } else {
-        axios
-          .post("/happypies/cart/store/" + this.menu.id)
-          .then((response) => {
-            console.log("장바구니");
-            this.userIdArray.push(response.data.id);
-            this.checkLikes();
-            Swal.fire({
-              position: "top-center",
-              icon: "success",
-              title: "장바구니에 상품이 담겼습니다.",
-              confirmButtonText: "장바구니 바로가기",
-              showConfirmButton: true,
-              timer: 1700,
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.replace("/happypies/shoppingcart");
-              }
-            });
-          })
-          .catch((error) => {
-            console.log(error);
+      }
+    },
+    getCart() {
+      if (this.auth_user) {
+        if (this.cart) {
+          Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "이미 장바구니에 담겨있습니다.",
+            confirmButtonText: "장바구니 바로가기",
+            showConfirmButton: true,
+            timer: 1700,
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.replace("/happypies/shoppingcart");
+            }
           });
+        } else {
+          axios
+            .post("/happypies/cart/store/" + this.menu.id)
+            .then((response) => {
+              console.log("장바구니");
+              this.userIdArray.push(response.data.id);
+              this.checkLikes();
+              Swal.fire({
+                position: "top-center",
+                icon: "success",
+                title: "장바구니에 상품이 담겼습니다.",
+                confirmButtonText: "장바구니 바로가기",
+                showConfirmButton: true,
+                timer: 1700,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.replace("/happypies/shoppingcart");
+                }
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      } else {
+        Swal.fire({
+          position: "top-center",
+          icon: "success",
+          title: "로그인을 해주세요",
+          confirmButtonText: "로그인 바로가기",
+          showConfirmButton: true,
+          timer: 3000,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "/login";
+          }
+        });
       }
     },
     deletedMenu() {
@@ -118,6 +188,7 @@ export default {
     this.userIdArray = this.menu.users.map((elem) => {
       return elem.id;
     });
+    console.log(this.userIdArray);
     this.checkLikes();
   },
 };

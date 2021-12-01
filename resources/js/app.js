@@ -27,6 +27,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('menu-list', require('./components/MenuList.vue').default);
 Vue.component('menu-show', require('./components/MenuShow.vue').default);
 Vue.component('shopping-cart', require('./components/ShoppingCart.vue').default);
+Vue.component('payment-history', require('./components/PaymentHistory.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

@@ -36,8 +36,8 @@ class MenusController extends Controller
         if($request->search){
             $search = $request->search;
             $menus = Menu::where('menuK', 'like', '%'.$search.'%')->latest('created_at')->get();
-
-            return $menus;
+        
+            return $menus;    
         }    
     }
 

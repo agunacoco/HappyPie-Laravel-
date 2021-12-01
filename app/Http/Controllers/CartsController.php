@@ -14,14 +14,13 @@ class CartsController extends Controller
             $menus = User::find($userid)->menus()->get();
             return $menus;
         }
-
-        
     }
 
-    public function store($menu_id){
+    public function store( Request $request, $menu_id){
         
+        $value = $request->cookie('name');
         $menu = Menu::find($menu_id);
-        
+
         return $menu->users()->save(auth()->user());
     }
 

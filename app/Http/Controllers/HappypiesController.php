@@ -31,6 +31,9 @@ class HappypiesController extends Controller
             return view("happypies.ordersheet");
         }
     }
+    public function payhistory(){
+        return view("happypies.payhistory");
+    }
 
     
 }

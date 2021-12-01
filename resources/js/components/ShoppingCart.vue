@@ -30,28 +30,25 @@
             <p>{{ total + shippingfee }}원</p>
           </div>
           <button @click="getAddressSet">결제하기</button>
-          <button
-            v-show="showBtn"
-            @click="getPayment"
-            type="button"
-            class="btn btn-outline-success w-full"
-          >
-            결제하기
-          </button>
 
-          <div>
+          <div v-show="showBtn" class="">
             <h1>
               우편번호: <span>{{ zip }}</span>
             </h1>
             <h1>
               기본주소: <span>{{ addr1 }}</span>
             </h1>
-            <h1>
-              상세주소: <span>{{ addr2 }}</span>
-            </h1>
-            <div ref="embed"></div>
+            <div>상세주소: <input v-model="addr2" /></div>
             <button class="btn btn-outline-success w-full" @click="showApi">
               주소API 호출
+            </button>
+            <button
+              v-show="showBtn"
+              @click="getPayment"
+              type="button"
+              class="btn btn-outline-success w-full"
+            >
+              결제하기
             </button>
           </div>
         </div>
@@ -61,20 +58,23 @@
 </template>
 
 <script>
+import Input from "../../../vendor/laravel/breeze/stubs/inertia-vue/resources/js/Components/Input.vue";
 import CartItem from "./CartItem.vue";
 export default {
   props: ["menus", "auth_user"],
-  components: { CartItem },
+  components: { CartItem, Input },
   data() {
     return {
       cartItems: [],
       itemsId: [],
+      itemsName: [],
       shippingfee: 2500,
       total: 0,
       showBtn: false,
       zip: "",
       addr1: "",
       addr2: "",
+      paymentInfo: "",
     };
   },
   methods: {
@@ -101,7 +101,7 @@ export default {
           this.zip = data.zonecode; //5자리 새우편번호 사용
           this.addr1 = fullRoadAddr;
         },
-      }).embed(this.$refs.embed);
+      }).open();
     },
 
     getAddressSet() {
@@ -109,11 +109,22 @@ export default {
     },
 
     getPayment() {
+      this.total += +2500;
       axios
-        .get("/api/payment/call")
+        .get(
+          "/api/payment/call?itemsId=" +
+            this.itemsId +
+            "&total_amount=" +
+            this.total +
+            "&user_id=" +
+            this.auth_user +
+            "&itemsName=" +
+            this.itemsName
+        )
         .then((response) => {
           console.log("kakaopay 성공");
-          window.location.href = response.data.next_redirect_pc_url;
+          this.paymentInfo = response.data;
+          window.location.href = this.paymentInfo.next_redirect_pc_url;
         })
         .catch((error) => {
           console.log(error);
@@ -142,10 +153,11 @@ export default {
     },
     itemId() {
       this.itemsId = [];
+      this.itemsName = [];
       this.cartItems.forEach((cartItem) => {
+        this.itemsName.push(cartItem.menuK);
         this.itemsId.push(cartItem.id);
       });
-      console.log(this.itemsId);
     },
   },
   created() {

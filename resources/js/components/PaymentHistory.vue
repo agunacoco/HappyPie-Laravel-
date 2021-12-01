@@ -1,33 +1,31 @@
 <template>
-  <div class="card mb-3 p-20"></div>
+  <div class="card mb-3 p-20">dd</div>
 </template>
 
 <script>
 export default {
-  props: [],
+  props: ["paymentInfo"],
   components: {},
   data() {
-    return {};
+    return {
+      getPayList() {
+        console.log(this.paymentInfo);
+      },
+    };
   },
-  methods: {
-    getPayment() {
-      axios
-        .get("/api/payment/call")
-        .then((response) => {
-          console.log("성공");
-          console.log(response.data);
-          // console.log(response.data.next_redirect_pc_url);
-          window.location.href = response.data.next_redirect_pc_url;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-  },
+  methods: {},
   created() {
-    console.log("cart입니다");
-    this.getCart();
-    this.cartItemChanged();
+    this.getPayList();
+    // axios
+    //   .get("/api/payment/success")
+    //   .then((response) => {
+    //     console.log("success성공");
+    //     console.log(response.data);
+    //     // window.location.href = response.data.next_redirect_pc_url;
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   },
 };
 </script>
