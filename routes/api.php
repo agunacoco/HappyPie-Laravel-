@@ -19,6 +19,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('/payment/')->group(function(){
-    Route::get('call', [PaymentsController::class, 'callpayment'])->name('payment.call');
-    Route::get('success', [PaymentsController::class, 'store'])->name('payment.store'); 
+    Route::get('call', [PaymentsController::class, 'callpayment']);
+    Route::get('success', [PaymentsController::class, 'approve']);
 });

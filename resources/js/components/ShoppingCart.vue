@@ -70,11 +70,13 @@ export default {
       itemsName: [],
       shippingfee: 2500,
       total: 0,
+      tototal: 0,
       showBtn: false,
       zip: "",
       addr1: "",
       addr2: "",
       paymentInfo: "",
+      partner_order_id: 0,
     };
   },
   methods: {
@@ -109,21 +111,40 @@ export default {
     },
 
     getPayment() {
-      this.total += +2500;
+      this.tototal = this.total + this.shippingfee;
+      function generateRandomCode(n) {
+        let str = "";
+        for (let i = 0; i < n; i++) {
+          str += Math.floor(Math.random() * 10);
+        }
+        return str;
+      }
+      this.partner_order_id = generateRandomCode(6);
       axios
         .get(
           "/api/payment/call?itemsId=" +
             this.itemsId +
             "&total_amount=" +
-            this.total +
+            this.tototal +
             "&user_id=" +
             this.auth_user +
             "&itemsName=" +
-            this.itemsName
+            this.itemsName +
+            "&partner_order_id=" +
+            this.partner_order_id
         )
         .then((response) => {
           console.log("kakaopay 성공");
           this.paymentInfo = response.data;
+          console.log(this.paymentInfo);
+          var setCookie = function (name, value, exp) {
+            var date = new Date();
+            date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+            document.cookie =
+              name + "=" + value + ";expires=" + date.toUTCString() + ";path=/";
+          };
+          setCookie("user_id", this.auth_user, 1000); // partner_user_id
+          setCookie("partner_order_id", this.partner_order_id, 1000); // partner_order_id
           window.location.href = this.paymentInfo.next_redirect_pc_url;
         })
         .catch((error) => {
