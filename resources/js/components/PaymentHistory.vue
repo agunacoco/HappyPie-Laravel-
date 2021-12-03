@@ -1,11 +1,4 @@
-<template>
-  <div class="card mb-3 p-20">
-    <p>카카오페이 결제가 정상적으로 완료되었습니다.</p>
-    <p>결제일시: {{ this.payInfo.approved_at }}</p>
-    <p>상품명: {{ this.payInfo.item_name }}</p>
-    <p>결제금액: {{ this.payInfo.amount.total }}</p>
-  </div>
-</template>
+<template></template>
 
 <script>
 export default {
@@ -18,6 +11,8 @@ export default {
       is_order_id: "",
       token: "",
       payInfo: "",
+      payInfoSave: "",
+      db_order_id: "",
     };
   },
   methods: {
@@ -48,21 +43,31 @@ export default {
         .then((response) => {
           console.log("결제저장 성공");
           console.log(response.data);
+          this.payInfoSave = response.data;
+          this.setCookie("db_order_id", this.payInfoSave.id, 1000);
+          this.db_order_id = this.getCookie("db_order_id");
+          window.location.href = "/happypies/orderlist/" + this.db_order_id;
         })
         .catch((error) => {
           console.log(error);
         });
     },
-  },
-  created() {
-    console.log("payment history");
-    var getCookie = function (name) {
+    setCookie(name, value, exp) {
+      var date = new Date();
+      date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+      document.cookie =
+        name + "=" + value + ";expires=" + date.toUTCString() + ";path=/";
+    },
+    getCookie(name) {
       var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
       return value ? value[2] : null;
-    };
-    this.is_tid = getCookie("tid"); // tid 번호
-    this.is_user_id = getCookie("user_id"); //partner_user_id
-    this.is_order_id = getCookie("partner_order_id"); //partner_order_id
+    },
+  },
+  created() {
+    this.is_tid = this.getCookie("tid"); // tid 번호
+    this.is_user_id = this.getCookie("user_id"); //partner_user_id
+    this.is_order_id = this.getCookie("partner_order_id"); //partner_order_id
+    this.db_order_id = this.getCookie("db_order_id");
 
     function getParameterByName(name) {
       name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -75,6 +80,11 @@ export default {
     this.token = getParameterByName("pg_token"); // token 번호
 
     this.getPayList();
+
+    if (this.db_order_id) {
+      console.log(this.db_order_id);
+      window.location.href = "/happypies/orderlist/" + this.db_order_id;
+    }
   },
 };
 </script>

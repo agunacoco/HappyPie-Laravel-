@@ -85,30 +85,26 @@ class PaymentsController extends Controller
     }
 
     public function store(Request $request){
-
-        $this->validate($request, [
-            'aid' => 'required',
-            'user_id' => 'required',
-            'order_id' => 'required',
-            'item_code'=> 'required',
-            'item_name' => 'required',
-            'approved_at' => 'required',
-            'total' => 'required',
-            'quantity' => 'required',
-        ]);
-
+        
         $payment = Payment::create([
-            'aid' => $request->input('aid'),
-            'user_id' => $request->input('partner_user_id'),
-            'order_id' => $request->input('partner_order_id'),
-            'item_code'=> $request->input('item_code'),
-            'item_name' => $request->input('item_name'),
-            'approved_at' => $request->input('approved_at'),
-            'total' => $request->amount->input('total'),
-            'quantity' => $request->input('quantity'),
+            'aid' => $request->aid,
+            'user_id' => $request->partner_user_id,
+            'order_id' => $request->partner_order_id,
+            'item_code'=> $request->item_code,
+            'item_name' => $request->item_name,
+            'approved_at' => $request->approved_at,
+            'total' => $request->amount['total'],
+            'quantity' => $request->quantity,
         ]);
 
         return $payment;
+    }
+
+    public function show($order_id){
+
+        $payment = Payment::find($order_id);
+
+        return view('happypies.orderList', ['payment'=>$payment]);
     }
 
 }

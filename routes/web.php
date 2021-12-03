@@ -39,5 +39,7 @@ Route::delete('/happypies/cart/{menu_id}', [CartsController::class, 'destroy'])-
 Route::get('/happypies/mypage', [HappypiesController::class, 'mypage'])->middleware('auth')->name('happypie.mypage');
 Route::get('/happypies/ordersheet', [HappypiesController::class, 'ordersheet'])->middleware('auth')->name('happypie.ordersheet');
 Route::get('happypies/payment/success', [HappypiesController::class, 'payhistory'])->middleware('auth')->name('happypie.payhistory');
-Route::post('/happypies/payment/store', [PaymentsController::class, 'store'])->name('cart.store');
+Route::post('/happypies/payment/store', [PaymentsController::class, 'store']);
+Route::get('/happypies/orderlist/{order_id}', [PaymentsController::class, 'show']);
+Route::get('/happypies/orderlist', [PaymentsController::class, 'index']);
 require __DIR__.'/auth.php';
