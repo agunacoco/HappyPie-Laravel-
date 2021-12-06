@@ -31,7 +31,7 @@
           </div>
           <button @click="getAddressSet">결제하기</button>
 
-          <div v-show="showBtn" class="">
+          <div v-show="showBtn">
             <h1>
               우편번호: <span>{{ zip }}</span>
             </h1>
@@ -100,7 +100,7 @@ export default {
           if (fullRoadAddr !== "") {
             fullRoadAddr += extraRoadAddr;
           }
-          this.zip = data.zonecode; //5자리 새우편번호 사용
+          this.zip = data.zonecode;
           this.addr1 = fullRoadAddr;
         },
       }).open();

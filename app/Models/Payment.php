@@ -19,4 +19,9 @@ class Payment extends Model
         'total',
         'quantity'
     ];
+
+    public function menus(){
+        return $this->belongsToMany(Menu::class);
+    }
+
 }

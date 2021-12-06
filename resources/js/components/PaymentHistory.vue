@@ -46,7 +46,7 @@ export default {
           this.payInfoSave = response.data;
           this.setCookie("db_order_id", this.payInfoSave.id, 1000);
           this.db_order_id = this.getCookie("db_order_id");
-          window.location.href = "/happypies/orderlist/" + this.db_order_id;
+          window.location.href = "/happypies/receipt/" + this.db_order_id;
         })
         .catch((error) => {
           console.log(error);
@@ -81,10 +81,10 @@ export default {
 
     this.getPayList();
 
-    if (this.db_order_id) {
-      console.log(this.db_order_id);
-      window.location.href = "/happypies/orderlist/" + this.db_order_id;
-    }
+    // if (this.db_order_id) {
+    //   console.log(this.db_order_id);
+    //   window.location.href = "/happypies/receipt/" + this.db_order_id;
+    // }
   },
 };
 </script>

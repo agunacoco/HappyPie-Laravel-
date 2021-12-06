@@ -111,41 +111,47 @@ class MenusController extends Controller
         ]);
 
         $menu = Menu::find($menu_id);
+
         $this->authorize('update', $menu);
-        
-        if($request->hasFile('image')){
-            Storage::delete('public/images/'.$menu->image);
-            $filename = time().'_'.$request->file('image')->getClientOriginalName();
-            $path = $request->file('image')->storeAs('public/images', $filename);
-            $menu->image = $filename;
-            $menu->save();
-        }
 
-        $menu->update([
-            'menuK' => $request->input('menuK'),
-            'menuE' => $request->input('menuE'),
-            'price' => $request->input('price'),
-            'content' => $request->input('content'),
-        ]);
+        if($request->user()->can('update', $menu)){
+            if($request->hasFile('image')){
+                Storage::delete('public/images/'.$menu->image);
+                $filename = time().'_'.$request->file('image')->getClientOriginalName();
+                $path = $request->file('image')->storeAs('public/images', $filename);
+                $menu->image = $filename;
+                $menu->save();
+            }
 
-        $name = $request->categories; 
-        $nowcategory = Category::where("menu_id", $menu_id)->get();       
-        
-        if($name){
-            if($nowcategory){
-                for($i = 0; $i<count($nowcategory); $i++){    
-                    $nowcategory[$i]->delete();
+            $menu->update([
+                'menuK' => $request->input('menuK'),
+                'menuE' => $request->input('menuE'),
+                'price' => $request->input('price'),
+                'content' => $request->input('content'),
+            ]);
+
+            $name = $request->categories; 
+            $nowcategory = Category::where("menu_id", $menu_id)->get();       
+            
+            if($name){
+                if($nowcategory){
+                    for($i = 0; $i<count($nowcategory); $i++){    
+                        $nowcategory[$i]->delete();
+                    }
+                }
+                $array_category = Str::of($name)->explode(',');
+                for($i = 0; $i<count($array_category); $i++){  
+                    $category = new Category;  
+                    $category->category = $array_category[$i];
+                    $category->menu_id = $menu_id;
+                    $category->save();     
                 }
             }
-            $array_category = Str::of($name)->explode(',');
-            for($i = 0; $i<count($array_category); $i++){  
-                $category = new Category;  
-                $category->category = $array_category[$i];
-                $category->menu_id = $menu_id;
-                $category->save();     
-            }
+            return $menu;
+        } else {
+            abort(403);
         }
-        return $menu;
+
 
     }
 

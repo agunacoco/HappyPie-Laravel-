@@ -14,13 +14,9 @@
                     <x-nav-link :href="route('happypie.menu')" :active="request()->routeIs('happypie.menu')">
                         {{ __('Menu') }}
                     </x-nav-link>
-                    @auth
-                    @if (auth()->user()->id == 1)
-                    <x-nav-link :href="route('happypie.ordersheet')" :active="request()->routeIs('happypie.ordersheet')">
+                    <x-nav-link :href="route('happypie.orderlist')" :active="request()->routeIs('happypie.orderlist')">
                         {{ __('Order Sheet') }}
                     </x-nav-link>
-                    @endif
-                    @endauth
                     
                 
                     

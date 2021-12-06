@@ -1,5 +1,5 @@
 <x-app-layout>
 
-    <order-list :payment="{{ $payment }}" />
-    
+    <order-list :payments="{{ $payments }}" />
+
 </x-app-layout>

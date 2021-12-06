@@ -85,7 +85,7 @@ class PaymentsController extends Controller
     }
 
     public function store(Request $request){
-        
+    
         $payment = Payment::create([
             'aid' => $request->aid,
             'user_id' => $request->partner_user_id,
@@ -97,13 +97,34 @@ class PaymentsController extends Controller
             'quantity' => $request->quantity,
         ]);
 
+        $menuIds =explode( ',',  $request->item_code );
+        $payment->menus()->toggle($menuIds);
+    
         return $payment;
+    }
+
+    public function showReceipt($order_id){
+
+        $payment = Payment::find($order_id);
+
+        return view('happypies.receipt', ['payment'=>$payment]);
+    }
+
+    public function index(){
+
+        $payments = Payment::where('user_id', auth()->user()->id)->latest()->get();
+
+        
+        
+        
+        return view('happypies.orderList', ['payments'=>$payments]);
     }
 
     public function show($order_id){
 
         $payment = Payment::find($order_id);
-
+        
+       
         return view('happypies.orderList', ['payment'=>$payment]);
     }
 
