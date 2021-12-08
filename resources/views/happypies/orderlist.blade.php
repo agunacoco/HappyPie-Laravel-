@@ -1,5 +1,5 @@
 <x-app-layout>
 
-    <order-list :payments="{{ $payments }}" />
+    <order-list :user="{{ auth()->user() }}" />
 
 </x-app-layout>

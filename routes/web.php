@@ -35,13 +35,23 @@ Route::get('/happypies/shoppingcart', [HappypiesController::class, 'cartindex'])
 Route::get('/happypies/shoppingcart/list', [CartsController::class, 'index'])->name('cart.index');
 Route::post('/happypies/cart/store/{menu_id}', [CartsController::class, 'store'])->middleware('auth')->name('cart.store');
 Route::patch('/happypies/cart/count/{menu_id}', [CartsController::class, 'update'])->middleware('auth')->name('cart.update');
-Route::delete('/happypies/cart/{menu_id}', [CartsController::class, 'destroy'])->name('cart.destroy');
+Route::delete('/happypies/cart/{menu_id}', [CartsController::class, 'destroy'])->middleware('auth')->name('cart.destroy');
 Route::get('/happypies/mypage', [HappypiesController::class, 'mypage'])->middleware('auth')->name('happypie.mypage');
 
 Route::get('happypies/payment/success', [HappypiesController::class, 'payhistory'])->middleware('auth')->name('happypie.payhistory');
 Route::post('/happypies/payment/store', [PaymentsController::class, 'store'])->middleware('auth');
+Route::delete('/happypies/cart/destroy', [CartsController::class, 'destroyCart'])->middleware('auth');
+
 Route::get('/happypies/receipt/{order_id}', [PaymentsController::class, 'showReceipt'])->middleware('auth');
 
-Route::get('/happypies/orderlist/{order_id}', [PaymentsController::class, 'show'])->middleware('auth');
-Route::get('/happypies/orderlist', [PaymentsController::class, 'index'])->middleware('auth')->name('happypie.orderlist');
+Route::post('/happypies/delivery/store', [PaymentsController::class, 'storeDelivery'])->middleware('auth');
+
+Route::prefix('/happypies/ordersheet')->group(function(){
+    Route::get('/', [HappypiesController::class, 'ordersheet'])->middleware('auth')->name('happypie.ordersheet');
+    Route::get('/list', [OrderlistsController::class, 'index'])->middleware('auth')->name('ordersheet.list');
+});
+
+
+Route::get('/happypies/orderlist/index', [PaymentsController::class, 'index'])->middleware('auth');
+Route::get('/happypies/orderlist', [HappypiesController::class, 'orderlist'])->middleware('auth')->name('happypie.orderlist');
 require __DIR__.'/auth.php';

@@ -35,5 +35,14 @@ class HappypiesController extends Controller
         return view("happypies.payhistory");
     }
 
+    public function orderlist(){
+        if(auth()->user()->id =! 1){
+            return view("happypies.orderList");
+        }
+        
+    }
+
+
+
     
 }

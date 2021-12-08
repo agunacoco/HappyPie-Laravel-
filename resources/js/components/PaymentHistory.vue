@@ -13,6 +13,11 @@ export default {
       payInfo: "",
       payInfoSave: "",
       db_order_id: "",
+      addr1: "",
+      addr2: "",
+      phoneNum: "",
+      receiver: "",
+      zip: "",
     };
   },
   methods: {
@@ -38,11 +43,30 @@ export default {
         });
     },
     postPayInfo() {
+      this.receiver = this.getCookie("receiver");
+      this.addr1 = this.getCookie("addr1");
+      this.addr2 = this.getCookie("addr2");
+      this.zip = this.getCookie("zip");
+      this.phoneNum = this.getCookie("phoneNum");
+      this.payInfo.addr1 = this.addr1;
+      this.payInfo.addr2 = this.addr2;
+      this.payInfo.receiver = this.receiver;
+      this.payInfo.zip = this.zip;
+      this.payInfo.phoneNum = this.phoneNum;
+
       axios
         .post("/happypies/payment/store", this.payInfo)
         .then((response) => {
           console.log("결제저장 성공");
           console.log(response.data);
+          axios
+            .get("/happypies/cart/destroy")
+            .then((response) => {
+              console.log("Cart 삭제 성공");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
           this.payInfoSave = response.data;
           this.setCookie("db_order_id", this.payInfoSave.id, 1000);
           this.db_order_id = this.getCookie("db_order_id");

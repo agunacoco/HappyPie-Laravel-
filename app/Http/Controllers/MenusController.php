@@ -85,8 +85,8 @@ class MenusController extends Controller
     public function show($menu_id){
 
         $categories = Category::where('menu_id',$menu_id)->get();
-        $menu = Menu::with('users')->where('id' , $menu_id)->first();
-
+        $menu = Menu::where('id' , $menu_id)->with('users')->first();
+        
         return view('happypies.show', ["menu"=>$menu, 'categories'=>$categories]);
     }
 

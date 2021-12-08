@@ -24,4 +24,8 @@ class Payment extends Model
         return $this->belongsToMany(Menu::class);
     }
 
+    public function deliverist(){
+        return $this->hasOne(Delivery::class);
+    }
+
 }

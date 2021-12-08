@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use App\Models\Payment;
 use App\Models\User;
+use App\Models\Delivery;
 use Illuminate\Http\Request;
 
 class PaymentsController extends Controller
@@ -12,7 +13,6 @@ class PaymentsController extends Controller
     public function callpayment(Request $request){
 
         $name = $request->itemsName;
-        $array_itemsId = explode(',', $name);
         $http_host = "http://127.0.0.1:8000";
         $adminkey = "2aec59941467f41efd86c2720cdb0c0b";
         $cid = "TC0ONETIME";
@@ -31,7 +31,7 @@ class PaymentsController extends Controller
             'partner_user_id' => $request->user_id,
             'item_name' => $name,
             'item_code' => $request->itemsId,
-            'quantity' => count($array_itemsId),
+            'quantity' => $request->quantity,
             'total_amount'=> $request->total_amount,
             'tax_free_amount'=> 0,
             'vat_amount'=>0,
@@ -85,7 +85,7 @@ class PaymentsController extends Controller
     }
 
     public function store(Request $request){
-    
+
         $payment = Payment::create([
             'aid' => $request->aid,
             'user_id' => $request->partner_user_id,
@@ -100,6 +100,16 @@ class PaymentsController extends Controller
         $menuIds =explode( ',',  $request->item_code );
         $payment->menus()->toggle($menuIds);
     
+        $delivery = Delivery::create([
+            'user_id'=> auth()->user()->id,
+            'payment_id' => $payment->id,
+            'addr1'=> $request->addr1,
+            'addr2'=> $request->addr2,
+            'detailaddr'=> $request->zip,
+            'phone'=> $request->phoneNum,
+            'receiver'=>$request->receiver,
+        ]);
+       
         return $payment;
     }
 
@@ -112,20 +122,18 @@ class PaymentsController extends Controller
 
     public function index(){
 
-        $payments = Payment::where('user_id', auth()->user()->id)->latest()->get();
+        $payments = Payment::where('user_id', auth()->user()->id)->with(['menus', 'deliverist'])->latest()->paginate(3);
 
-        
-        
-        
-        return view('happypies.orderList', ['payments'=>$payments]);
+        return $payments;
     }
 
-    public function show($order_id){
+    public function destroyCart(){
 
-        $payment = Payment::find($order_id);
-        
-       
-        return view('happypies.orderList', ['payment'=>$payment]);
+        $user = User::find(auth()->user()->id);
+        $user->menus()->detach();
+
+        return true;
     }
 
 }
+

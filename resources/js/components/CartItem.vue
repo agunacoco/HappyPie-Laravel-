@@ -22,7 +22,7 @@
             <p class="card-text">{{ menu.price * unit }}원</p>
 
             <div class="flex">
-              <button @click="clickCountMinus">-</button>
+              <button @click="clickCountMinus" v-show="this.unit > 1">-</button>
               <p>{{ unit }}</p>
               <button @click="clickCountPlus">+</button>
               <button class="ml-2" @click="deletedcart">삭제</button>
