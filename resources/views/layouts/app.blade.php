@@ -21,11 +21,15 @@
     </head>
     <body class="font-sans antialiased">
         <div class="bg-yellow-100 min-h-screen">  
-            <div class="flex justify-center p-2">
+            <div class="flex justify-center">
                 <a href="{{ route('happypie.main') }}">
                     <x-application-logo />
                 </a>
             </div>
+            <div class="flex justify-center mb-2">
+                <p class="text-4xl font-extrabold font-serif text-center">HappyCake</p>
+            </div>
+            
 
             @include('layouts.navigation')
             <!-- Page Content -->

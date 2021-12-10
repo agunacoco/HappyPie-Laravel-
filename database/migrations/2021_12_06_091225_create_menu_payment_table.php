@@ -17,6 +17,7 @@ class CreateMenuPaymentTable extends Migration
             $table->id();
             $table->foreignId('menu_id')->constrained()->onDelete('cascade');
             $table->foreignId('payment_id')->constrained()->onDelete('cascade');
+            $table->unsignedInteger('count')->default(1);
             $table->timestamps();
         });
     }

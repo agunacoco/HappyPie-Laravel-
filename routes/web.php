@@ -5,6 +5,7 @@ use App\Http\Controllers\MenusController;
 use App\Http\Controllers\HappypiesController;
 use App\Http\Controllers\CartsController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\OrderlistsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,17 +41,18 @@ Route::get('/happypies/mypage', [HappypiesController::class, 'mypage'])->middlew
 
 Route::get('happypies/payment/success', [HappypiesController::class, 'payhistory'])->middleware('auth')->name('happypie.payhistory');
 Route::post('/happypies/payment/store', [PaymentsController::class, 'store'])->middleware('auth');
-Route::delete('/happypies/cart/destroy', [CartsController::class, 'destroyCart'])->middleware('auth');
 
+Route::delete('/happypies/cart/destroy', [PaymentsController::class, 'destroyCart'])->middleware('auth');
 Route::get('/happypies/receipt/{order_id}', [PaymentsController::class, 'showReceipt'])->middleware('auth');
 
 Route::post('/happypies/delivery/store', [PaymentsController::class, 'storeDelivery'])->middleware('auth');
 
 Route::prefix('/happypies/ordersheet')->group(function(){
     Route::get('/', [HappypiesController::class, 'ordersheet'])->middleware('auth')->name('happypie.ordersheet');
-    Route::get('/list', [OrderlistsController::class, 'index'])->middleware('auth')->name('ordersheet.list');
+    Route::get('/list', [OrderlistsController::class, 'index'])->middleware('auth');
+    Route::patch('/status/{payment_id}', [OrderlistsController::class, 'updateStatus'])->middleware('auth');
+    Route::patch('/show/{payment_id}', [OrderlistsController::class, 'show'])->middleware('auth');
 });
-
 
 Route::get('/happypies/orderlist/index', [PaymentsController::class, 'index'])->middleware('auth');
 Route::get('/happypies/orderlist', [HappypiesController::class, 'orderlist'])->middleware('auth')->name('happypie.orderlist');

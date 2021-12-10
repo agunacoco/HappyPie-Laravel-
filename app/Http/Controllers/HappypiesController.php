@@ -36,9 +36,10 @@ class HappypiesController extends Controller
     }
 
     public function orderlist(){
-        if(auth()->user()->id =! 1){
+        if(auth()->user()->id !== 1){
             return view("happypies.orderList");
         }
+        
         
     }
 

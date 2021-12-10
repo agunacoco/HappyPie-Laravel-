@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="border-b border-gray-100">
+<nav x-data="{ open: false }" class="border-b border-white">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col-reverse h-16">
@@ -15,9 +15,9 @@
                         {{ __('Menu') }}
                     </x-nav-link>
                     @if (auth()->user())
-                    @if (auth()->user()->id =! 1)
+                    @if (auth()->user()->id != 1)
                     <x-nav-link :href="route('happypie.orderlist')" :active="request()->routeIs('happypie.orderlist')">
-                        {{ __('Order Sheet') }}
+                        {{ __('Order List') }}
                     </x-nav-link>
                     @else
                     <x-nav-link :href="route('happypie.ordersheet')" :active="request()->routeIs('happypie.ordersheet')">
@@ -27,7 +27,6 @@
                     @endif
                     
                     
-                
                     
                 </div>
             </div>

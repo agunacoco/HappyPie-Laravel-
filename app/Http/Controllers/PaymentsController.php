@@ -97,9 +97,21 @@ class PaymentsController extends Controller
             'quantity' => $request->quantity,
         ]);
 
+        $userid = auth()->user()->id;
         $menuIds =explode( ',',  $request->item_code );
         $payment->menus()->toggle($menuIds);
-    
+
+        if($request->directPayment){
+            Menu::find($request->item_code)->payments()->updateExistingPivot($payment->id, ['count' => $request->quantity]);
+        }else{
+            foreach($menuIds as $menuId){
+                $originalCount=User::find($userid)->menus()->where('menu_id',$menuId)->value('count');
+                $cart = Menu::find($menuId)->payments()->updateExistingPivot($payment->id, ['count' => $originalCount]);
+            }
+            $user = User::find(auth()->user()->id);
+            $user->menus()->detach();
+        }
+
         $delivery = Delivery::create([
             'user_id'=> auth()->user()->id,
             'payment_id' => $payment->id,
@@ -109,6 +121,8 @@ class PaymentsController extends Controller
             'phone'=> $request->phoneNum,
             'receiver'=>$request->receiver,
         ]);
+
+        
        
         return $payment;
     }
@@ -122,18 +136,12 @@ class PaymentsController extends Controller
 
     public function index(){
 
-        $payments = Payment::where('user_id', auth()->user()->id)->with(['menus', 'deliverist'])->latest()->paginate(3);
+        $payments = Payment::where('user_id', auth()->user()->id)->with(['menus', 'delivery', 'user'])->latest()->paginate(3);
 
         return $payments;
     }
 
-    public function destroyCart(){
 
-        $user = User::find(auth()->user()->id);
-        $user->menus()->detach();
-
-        return true;
-    }
 
 }
 

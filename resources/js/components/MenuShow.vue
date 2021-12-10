@@ -11,7 +11,7 @@
       <div class="col-md-6">
         <div class="card-body">
           <div v-show="!showOrder">
-            <h5 class="card-title">{{ menu.menuK }}</h5>
+            <h5 class="text-xl font-extrabold card-title">{{ menu.menuK }}</h5>
             <div class="flex justify-between">
               <h5 class="card-title">{{ menu.menuE }}</h5>
               <p class="card-text">{{ menu.price }}원</p>
@@ -20,7 +20,7 @@
               {{ menu.content }}
             </p>
           </div>
-          <div v-show="showBtn">
+          <div v-show="showBtn" class="mt-2">
             <button v-show="!showOrder" @click="getCart">장바구니 담기</button>
             <button v-show="!showOrder" @click="getOrdered">주문하기</button>
             <div v-show="showOrder" class="card">
@@ -117,7 +117,7 @@
               </div>
             </div>
           </div>
-          <div v-show="!showBtn">
+          <div v-show="!showBtn" class="mt-2">
             <button v-if="auth_user == 1" @click="deletedMenu">삭제하기</button>
             <button v-if="auth_user == 1" @click="getEdit">수정하기</button>
           </div>
@@ -225,6 +225,7 @@ export default {
           console.log(this.paymentInfo);
           this.setCookie("user_id", this.auth_user, 1000); // partner_user_id
           this.setCookie("partner_order_id", this.partner_order_id, 1000); // partner_order_id
+          this.setCookie("directPayment", 1, 1000);
           window.location.href = this.paymentInfo.next_redirect_pc_url;
         })
         .catch((error) => {

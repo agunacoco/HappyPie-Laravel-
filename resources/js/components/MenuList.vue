@@ -10,7 +10,9 @@
       />
     </div>
 
-    <button v-if="auth_user == 1" @click="btnClicked">Menu Create</button>
+    <button v-if="auth_user == 1" @click="btnClicked" class="btn bg-red-200">
+      Menu Create
+    </button>
     <div v-if="numClick == true" class="card mb-3 p-10"><menu-create /></div>
   </div>
 </template>

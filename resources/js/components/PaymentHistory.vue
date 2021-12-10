@@ -18,6 +18,7 @@ export default {
       phoneNum: "",
       receiver: "",
       zip: "",
+      directPayment: "",
     };
   },
   methods: {
@@ -48,29 +49,36 @@ export default {
       this.addr2 = this.getCookie("addr2");
       this.zip = this.getCookie("zip");
       this.phoneNum = this.getCookie("phoneNum");
+      this.directPayment = this.getCookie("directPayment");
       this.payInfo.addr1 = this.addr1;
       this.payInfo.addr2 = this.addr2;
       this.payInfo.receiver = this.receiver;
       this.payInfo.zip = this.zip;
       this.payInfo.phoneNum = this.phoneNum;
-
+      if (this.directPayment == 1) {
+        this.payInfo.directPayment = this.directPayment;
+      }
       axios
         .post("/happypies/payment/store", this.payInfo)
         .then((response) => {
           console.log("결제저장 성공");
           console.log(response.data);
-          axios
-            .get("/happypies/cart/destroy")
-            .then((response) => {
-              console.log("Cart 삭제 성공");
-            })
-            .catch((error) => {
-              console.log(error);
-            });
           this.payInfoSave = response.data;
           this.setCookie("db_order_id", this.payInfoSave.id, 1000);
           this.db_order_id = this.getCookie("db_order_id");
+
           window.location.href = "/happypies/receipt/" + this.db_order_id;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    destroyCart() {
+      axios
+        .delete("/happypies/cart/destroy")
+        .then((response) => {
+          console.log("Cart 삭제 성공");
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -85,6 +93,9 @@ export default {
     getCookie(name) {
       var value = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
       return value ? value[2] : null;
+    },
+    deleteCookie(name) {
+      document.cookie = name + "=; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
     },
   },
   created() {

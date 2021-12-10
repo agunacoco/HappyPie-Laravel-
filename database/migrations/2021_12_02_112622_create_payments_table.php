@@ -18,6 +18,7 @@ class CreatePaymentsTable extends Migration
             $table->unsignedInteger('aid');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->unsignedInteger('order_id');
+            $table->string('order_status')->default("주문확인");
             $table->string('item_name');
             $table->string('item_code');
             $table->string('approved_at');

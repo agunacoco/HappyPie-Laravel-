@@ -175,6 +175,7 @@ export default {
         this.setCookie("phoneNum", this.phoneNum, 1000);
         this.setCookie("zip", this.zip, 1000);
         this.setCookie("receiver", this.receiver, 1000);
+        this.setCookie("directPayment", 0, 1000);
         this.getPayment();
       } else {
         alert("배달정보를 입력해주세요.");
