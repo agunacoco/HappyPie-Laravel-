@@ -13,7 +13,10 @@
         </div>
         <div class="col-md-6 mt-4">
           <p>{{ this.menu.menuK }}</p>
-          <p>{{ this.menu.menuE }}</p>
+          <div class="flex">
+            <p>{{ this.menu.menuE }}</p>
+            <p class="ml-2">X{{ this.menu.pivot.count }}</p>
+          </div>
         </div>
       </div>
     </a>
@@ -38,7 +41,6 @@ export default {
   },
   created() {
     console.log(this.menu);
-    console.log(this.menu.menuK);
   },
 };
 </script>

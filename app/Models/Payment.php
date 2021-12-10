@@ -17,14 +17,19 @@ class Payment extends Model
         'item_name',
         'approved_at',
         'total',
-        'quantity'
+        'quantity',
+        'order_status'
     ];
 
-    public function menus(){
-        return $this->belongsToMany(Menu::class);
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
-    public function deliverist(){
+    public function menus(){
+        return $this->belongsToMany(Menu::class)->withPivot(['count']);
+    }
+
+    public function delivery(){
         return $this->hasOne(Delivery::class);
     }
 

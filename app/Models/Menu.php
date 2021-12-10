@@ -22,6 +22,10 @@ class Menu extends Model
         return $this->hasMany(Category::class); 
     }
 
+    public function payments(){
+        return $this->belongsToMany(Payment::class)->withPivot(['count']);
+    }
+
     public function users(){
         return $this->belongsToMany(User::class)->withPivot([
             'count'

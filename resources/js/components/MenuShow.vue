@@ -225,6 +225,7 @@ export default {
           console.log(this.paymentInfo);
           this.setCookie("user_id", this.auth_user, 1000); // partner_user_id
           this.setCookie("partner_order_id", this.partner_order_id, 1000); // partner_order_id
+          this.setCookie("directPayment", 1, 1000);
           window.location.href = this.paymentInfo.next_redirect_pc_url;
         })
         .catch((error) => {
