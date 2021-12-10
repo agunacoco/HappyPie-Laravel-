@@ -88,11 +88,12 @@
                   required
                 />
 
-                <button
-                  class="btn btn-outline-success w-full my-3"
-                  @click="postDelivery"
-                >
-                  결제하기
+                <button class="w-full my-3" @click="postDelivery">
+                  <img
+                    :src="'/storage/images/payment_icon_yellow_medium.png'"
+                    class="m-auto"
+                    alt="no image"
+                  />
                 </button>
                 <div class="flex" @click="onClickBack">
                   <svg

@@ -84,13 +84,19 @@
               style="font-size: 15px"
               required
             />
+
+            <!-- <img alt="no image" class="max-w-full rounded-lg" src="{{  }}" /> -->
             <button
               v-show="showBtn"
               @click="postDelivery"
               type="button"
-              class="btn btn-outline-success w-full my-3"
+              class="w-full my-3"
             >
-              결제하기
+              <img
+                :src="'/storage/images/payment_icon_yellow_medium.png'"
+                class="m-auto"
+                alt="no image"
+              />
             </button>
           </div>
         </div>
