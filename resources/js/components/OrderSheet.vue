@@ -1,5 +1,7 @@
 <template>
   <div class="card mb-3 p-20">
+    <div class="text-xl font-semibold">총 매출액: {{ total }}</div>
+    <div class="text-xl font-semibold">오늘의 매출액: {{ todayTotal }}</div>
     <div class="row">
       <div class="col-4">
         <div v-show="!viewShow">
@@ -52,6 +54,11 @@ export default {
       viewShow: false,
       showSheet: false,
       payment: "",
+      total: "",
+      todayDate: "",
+      itemDate: "",
+      todayItem: "",
+      todayTotal: "",
     };
   },
   methods: {
@@ -81,21 +88,42 @@ export default {
       axios
         .get("/happypies/ordersheet/list")
         .then((response) => {
-          // console.log(response.data);
+          console.log(response.data);
           this.payments = response.data;
           if (this.payments.data.length == 0) {
             this.viewShow = false;
           } else {
             this.viewShow = true;
           }
+          this.getTotal();
         })
         .catch((error) => {
           console.log(error);
         });
     },
+    getTotal() {
+      this.itemDate = "";
+      this.todayItem = [];
+      this.total = 0;
+      this.todayTotal = 0;
+      this.payments.data.forEach((payment) => {
+        this.total += +payment.total;
+        // console.log(payment.created_at);
+        var date = payment.created_at.split("T");
+        if (this.todayDate == date[0]) {
+          this.todayItem.push(payment);
+          this.todayTotal += +payment.total;
+        }
+      });
+    },
   },
   created() {
     this.getOrderSheet();
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = ("0" + (today.getMonth() + 1)).slice(-2);
+    var day = ("0" + today.getDate()).slice(-2);
+    this.todayDate = year + "-" + month + "-" + day;
   },
 };
 </script>

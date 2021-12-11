@@ -34,7 +34,7 @@
         type="button"
         class="btn btn-secondary"
       >
-        {{ this.btnStatus }}
+        완료
       </button>
     </h5>
     <div class="card-body p-3">
@@ -89,9 +89,8 @@ export default {
               "?status=접수완료"
           )
           .then((response) => {
-            console.log("접수dhjs");
             this.payment = response.data;
-            console.log(response.data);
+            // console.log(response.data);
             this.$emit("receipted", this.payment);
           })
           .catch((error) => {
@@ -101,7 +100,7 @@ export default {
     },
   },
   created() {
-    console.log(this.payment);
+    // console.log(this.payment);
     this.paymentDate = this.payment.approved_at.split("T");
     if (this.order_status == "주문확인") {
       this.status = "요청";

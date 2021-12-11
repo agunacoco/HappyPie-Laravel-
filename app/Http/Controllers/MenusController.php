@@ -44,7 +44,7 @@ class MenusController extends Controller
     public function store(Request $request){
 
         $this->validate($request, [
-            'content' => 'required|min:3',
+            'content' => 'required',
             'menuK' => 'required',
             'menuE' => 'required',
             'price' => 'required', 
@@ -104,7 +104,7 @@ class MenusController extends Controller
     public function update(Request $request, $menu_id){
 
         $this->validate($request, [
-            'content' => 'required|min:3',
+            'content' => 'required',
             'menuK' => 'required',
             'menuE' => 'required',
             'price' => 'required', 
