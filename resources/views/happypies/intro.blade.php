@@ -3,6 +3,7 @@
   <div class="card mb-3 p-20">
       <div class="row">
         <div class="col">
+          
           <img alt="no image" class="max-w-full rounded-lg" src="{{ '/storage/images/af12690cc6e3b8a635d1df8c103204e7.jpg' }}">
         </div>
         <div class="col-md-7">

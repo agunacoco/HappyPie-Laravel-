@@ -66,7 +66,6 @@ export default {
           this.payInfoSave = response.data;
           this.setCookie("db_order_id", this.payInfoSave.id, 1000);
           this.db_order_id = this.getCookie("db_order_id");
-
           window.location.href = "/happypies/receipt/" + this.db_order_id;
         })
         .catch((error) => {

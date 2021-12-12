@@ -10,7 +10,7 @@ class OrderlistsController extends Controller
     public function index(){
 
         $payments = Payment::with(['delivery', 'user', 'menus'])->latest()->paginate(3);
-
+        
         return $payments;
     }
     public function updateStatus(Request $request, $payment_id){
